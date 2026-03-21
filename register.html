@@ -42,7 +42,7 @@
                 <label class="text-[10px] uppercase font-black text-white/70 ml-1">Code Invitation</label>
                 <input type="text" id="inv" placeholder="Saisir le code" class="input-group px-4 rounded-xl w-full" required>
             </div>
-            <button type="submit" class="bg-white text-black font-black w-full py-4 rounded-xl text-[11px] uppercase mt-4">S'inscrire</button>
+            <button type="submit" id="submitBtn" class="bg-white text-black font-black w-full py-4 rounded-xl text-[11px] uppercase mt-4">S'inscrire</button>
         </form>
 
         <div class="mt-6 text-center text-white/60 text-xs">
@@ -53,12 +53,51 @@
     <script>
         document.getElementById('regForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            if(document.getElementById('p1').value !== document.getElementById('p2').value) {
+            
+            const phone = document.getElementById('tel').value;
+            const pass1 = document.getElementById('p1').value;
+            const pass2 = document.getElementById('p2').value;
+            const inviteCode = document.getElementById('inv').value;
+            const btn = document.getElementById('submitBtn');
+
+            if(pass1 !== pass2) {
                 alert("❌ Les mots de passe ne correspondent pas !");
                 return;
             }
-            alert("✅ Inscription réussie !");
-            window.location.href = "index.html"; // Retour à la connexion
+
+            btn.innerText = "CRÉATION EN COURS...";
+            btn.disabled = true;
+
+            // Données utilisateur pour ton console Firebase
+            const userData = {
+                telephone: "+243" + phone,
+                motDePasse: pass1,
+                codeInvitation: inviteCode,
+                solde: 0,
+                droitRetrait: false,
+                dateInscription: new Date().toLocaleString()
+            };
+
+            // Envoi vers ton console Realtime Database
+            fetch('https://sonyy-9b565-default-rtdb.firebaseio.com/utilisateurs.json', {
+                method: 'POST',
+                body: JSON.stringify(userData)
+            })
+            .then(response => {
+                if(response.ok) {
+                    alert("✅ Inscription réussie sur SONNY !");
+                    window.location.href = "index.html";
+                } else {
+                    alert("❌ Erreur serveur.");
+                    btn.innerText = "S'INSCRIRE";
+                    btn.disabled = false;
+                }
+            })
+            .catch(error => {
+                alert("❌ Erreur de connexion.");
+                btn.innerText = "S'INSCRIRE";
+                btn.disabled = false;
+            });
         });
     </script>
 </body>
