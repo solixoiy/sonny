@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SONNY | Recharge</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body { background: #f4f4f7; font-family: -apple-system, sans-serif; }
+        .amount-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .amount-box { 
+            background: white; border: 2px solid transparent; border-radius: 15px; 
+            padding: 15px 2px; text-align: center; cursor: pointer; transition: 0.3s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+        }
+        .amount-box.active { border-color: #000; background: #fff; transform: scale(1.05); }
+        .amount-box p { font-size: 11px; font-weight: 900; color: #1a1a1a; }
+        .method-item { border-bottom: 1px solid #f0f0f0; cursor: pointer; transition: 0.2s; background: white; }
+        .method-item:last-child { border-bottom: none; }
+        .method-active { background: #f0fdf4 !important; border-left: 4px solid #22c55e; }
+        
+        @keyframes bounceIn {
+            0% { transform: scale(0.9); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .animate-bounce-in { animation: bounceIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+    </style>
+</head>
+<body class="p-5 pb-10">
+
+    <div class="mb-8 pt-4 text-center">
+        <h1 class="text-2xl font-black italic uppercase tracking-tighter">Recharger CDF</h1>
+        <p class="text-[9px] text-gray-400 font-bold uppercase tracking-[0.2em] mt-1 italic">S Sony • Système de Dépôt</p>
+    </div>
+
+    <div class="mb-8">
+        <h3 class="text-[10px] font-black uppercase text-gray-400 mb-4 ml-1 tracking-widest text-center">Sélectionnez le montant</h3>
+        <div class="amount-grid">
+            <div class="amount-box" onclick="setAmt(18000, this)"><p>18.000</p></div>
+            <div class="amount-box" onclick="setAmt(35000, this)"><p>35.000</p></div>
+            <div class="amount-box" onclick="setAmt(50000, this)"><p>50.000</p></div>
+            <div class="amount-box" onclick="setAmt(75000, this)"><p>75.000</p></div>
+            <div class="amount-box" onclick="setAmt(100000, this)"><p>100.000</p></div>
+            <div class="amount-box" onclick="setAmt(150000, this)"><p>150.000</p></div>
+            <div class="amount-box" onclick="setAmt(300000, this)"><p>300.000</p></div>
+            <div class="amount-box" onclick="setAmt(500000, this)"><p>500.000</p></div>
+            <div class="amount-box" onclick="setAmt(1000000, this)"><p>1.000.000</p></div>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-[2rem] shadow-xl shadow-gray-200/50 overflow-hidden mb-8 border border-gray-50">
+        <div class="method-item p-5 flex items-center gap-4" onclick="setNet('Orange Money', '0802667704', 'OMBENI BARAKA', this)">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c8/Orange_logo.svg" class="w-7 h-7">
+            <span class="text-[11px] font-black uppercase tracking-wider text-gray-700">Orange Money</span>
+        </div>
+        <div class="method-item p-5 flex items-center gap-4" onclick="setNet('Airtel Money', '096232775', 'NAMWEZI SIFA', this)">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/d/d4/Airtel_logo.svg" class="w-7 h-7">
+            <span class="text-[11px] font-black uppercase tracking-wider text-gray-700">Airtel Money</span>
+        </div>
+        <div class="method-item p-5 flex items-center gap-4" onclick="setNet('M-Pesa', '0813944647', 'NUMÉRO ANONYME', this)">
+            <img src="https://i.ibb.co/Vvz8L1Y/mpesa.png" class="w-10 h-6 object-contain">
+            <span class="text-[11px] font-black uppercase tracking-wider text-gray-700">M-Pesa (Vodacom)</span>
+        </div>
+    </div>
+
+    <div id="boxInfo" class="hidden animate-bounce-in bg-black text-white p-6 rounded-[2rem] mb-8 shadow-2xl">
+        <div class="flex justify-between items-start mb-4">
+            <div>
+                <p class="text-[8px] font-black text-blue-400 uppercase mb-1 tracking-widest">Envoyez l'argent au :</p>
+                <h2 id="dispNum" class="text-2xl font-black tracking-widest text-white italic">000 000 000</h2>
+            </div>
+            <i class="fa-solid fa-shield-check text-blue-500 text-xl"></i>
+        </div>
+        <p id="dispName" class="text-[10px] font-bold uppercase text-gray-400">---</p>
+    </div>
+
+    <button onclick="submitPage1()" class="w-full bg-blue-600 text-white py-5 rounded-2xl font-black uppercase text-xs tracking-[0.2em] shadow-lg shadow-blue-200 active:scale-95 transition-all">
+        Suivant <i class="fa-solid fa-chevron-right ml-2"></i>
+    </button>
+
+    <script>
+        const dbURL = "https://sonyy-9b565-default-rtdb.firebaseio.com";
+        let selection = { amount: 0, method: '', receiverNumber: '', receiverName: '' };
+
+        function setAmt(v, el) {
+            selection.amount = v;
+            document.querySelectorAll('.amount-box').forEach(b => b.classList.remove('active'));
+            el.classList.add('active');
+        }
+
+        function setNet(m, n, name, el) {
+            selection.method = m; 
+            selection.receiverNumber = n; 
+            selection.receiverName = name;
+            
+            // UI : Marquer l'élément actif
+            document.querySelectorAll('.method-item').forEach(i => i.classList.remove('method-active'));
+            el.classList.add('method-active');
+            
+            // Affichage des infos
+            const box = document.getElementById('boxInfo');
+            box.classList.remove('hidden');
+            document.getElementById('dispNum').innerText = n;
+            document.getElementById('dispName').innerText = name;
+            
+            // Petit effet de vibration lors du clic
+            if (window.navigator.vibrate) window.navigator.vibrate(50);
+        }
+
+        function submitPage1() {
+            if(!selection.amount || !selection.method) {
+                return alert("⚠️ Veuillez sélectionner un montant et un réseau de paiement.");
+            }
+            localStorage.setItem('temp_recharge', JSON.stringify(selection));
+            // On utilise ton fichier de confirmation existant
+            window.location.href = "recharge_final.html";
+        }
+    </script>
+</body>
+</html>
