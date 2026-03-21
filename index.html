@@ -32,16 +32,16 @@
                 <label class="text-[10px] uppercase font-black text-white/70 ml-1">Numéro (+243)</label>
                 <div class="input-group flex items-center px-4 rounded-2xl">
                     <span class="text-white font-bold mr-2">+243</span>
-                    <input type="tel" placeholder="812345678" required>
+                    <input type="tel" id="loginTel" placeholder="812345678" required>
                 </div>
             </div>
             <div class="space-y-1">
                 <label class="text-[10px] uppercase font-black text-white/70 ml-1">Mot de passe</label>
                 <div class="input-group rounded-2xl">
-                    <input type="password" placeholder="••••••" required>
+                    <input type="password" id="loginPass" placeholder="••••••" required>
                 </div>
             </div>
-            <button type="submit" class="btn-login w-full py-5 rounded-2xl text-[11px] mt-6 uppercase tracking-widest">Se Connecter</button>
+            <button type="submit" id="loginBtn" class="btn-login w-full py-5 rounded-2xl text-[11px] mt-6 uppercase tracking-widest">Se Connecter</button>
         </form>
 
         <div class="mt-10">
@@ -52,8 +52,43 @@
     <script>
         document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            // Redirection vers la page de bord
-            window.location.href = "dashboard.html";
+            
+            const phone = "+243" + document.getElementById('loginTel').value;
+            const pass = document.getElementById('loginPass').value;
+            const btn = document.getElementById('loginBtn');
+
+            btn.innerText = "VÉRIFICATION...";
+            btn.disabled = true;
+
+            // Récupération des utilisateurs depuis ton console Firebase
+            fetch('https://sonyy-9b565-default-rtdb.firebaseio.com/utilisateurs.json')
+            .then(response => response.json())
+            .then(data => {
+                let userFound = null;
+                
+                // On cherche si le numéro et le mot de passe correspondent
+                for (let id in data) {
+                    if (data[id].telephone === phone && data[id].motDePasse === pass) {
+                        userFound = { ...data[id], firebaseId: id };
+                        break;
+                    }
+                }
+
+                if (userFound) {
+                    // Stockage des infos de session
+                    localStorage.setItem('sonny_session', JSON.stringify(userFound));
+                    window.location.href = "dashboard.html";
+                } else {
+                    alert("❌ Numéro ou mot de passe incorrect.");
+                    btn.innerText = "SE CONNECTER";
+                    btn.disabled = false;
+                }
+            })
+            .catch(error => {
+                alert("❌ Erreur de connexion au serveur.");
+                btn.innerText = "SE CONNECTER";
+                btn.disabled = false;
+            });
         });
     </script>
 </body>
