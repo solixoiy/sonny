@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SONNY | Retraits</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body { background: #f8fafc; font-family: -apple-system, sans-serif; }
+        .glass-header { background: #000; color: white; border-bottom-left-radius: 2.5rem; border-bottom-right-radius: 2.5rem; }
+        .card { background: white; border-radius: 2rem; border: 1px solid #f1f5f9; box-shadow: 0 10px 25px rgba(0,0,0,0.03); }
+        .input-premium { background: #f1f5f9; border-radius: 1rem; padding: 18px; width: 100%; outline: none; font-weight: bold; border: 2px solid transparent; transition: 0.3s; }
+        .input-premium:focus { border-color: #3b82f6; background: white; }
+    </style>
+</head>
+<body class="pb-10">
+
+    <div class="glass-header p-10 text-center shadow-2xl mb-8">
+        <h1 class="text-3xl font-black italic uppercase tracking-tighter">Retrait</h1>
+        <p class="text-[10px] font-bold opacity-50 uppercase tracking-[0.4em] mt-2 italic text-blue-400">Heures: 09h00 — 17h00</p>
+    </div>
+
+    <div class="px-6 space-y-6">
+        <div class="card p-6">
+            <h3 class="text-[11px] font-black uppercase text-gray-400 mb-4 tracking-widest flex items-center gap-2">
+                <i class="fa-solid fa-shield-halved text-blue-600"></i> Compte de Réception
+            </h3>
+
+            <div id="formLiaison" class="space-y-4">
+                <input type="text" id="nomCompte" placeholder="Nom complet (Titulaire)" class="input-premium text-sm">
+                <input type="number" id="numCompte" placeholder="Numéro Mobile Money (ex: 082...)" class="input-premium text-sm">
+                <p class="text-[9px] text-red-500 font-bold italic px-2 leading-tight">
+                    * Attention: Ce compte est lié définitivement pour votre sécurité.
+                </p>
+                <button onclick="lierCompteFirebase()" id="btnLier" class="w-full bg-blue-600 text-white py-4 rounded-2xl font-black uppercase text-[10px] tracking-widest shadow-lg active:scale-95 transition-all">
+                    Lier mon compte maintenant
+                </button>
+            </div>
+
+            <div id="affichageCompte" class="hidden">
+                <div class="bg-blue-50/50 p-5 rounded-2xl border border-dashed border-blue-200">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-[9px] font-black text-blue-600 uppercase tracking-tighter">Compte Officiel Vérifié</span>
+                        <i class="fa-solid fa-circle-check text-green-500"></i>
+                    </div>
+                    <p id="labelNom" class="font-black text-lg uppercase text-black leading-tight">CHARGEMENT...</p>
+                    <p id="labelNum" class="text-sm font-bold text-gray-500 font-mono mt-1 italic">000 000 000</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card p-6">
+            <h3 class="text-[11px] font-black uppercase text-gray-400 mb-4 tracking-widest">Montant à retirer</h3>
+            <div class="flex items-center gap-2 border-b-2 border-gray-100 mb-6 pb-2">
+                <input type="number" id="montantInput" placeholder="5200" class="w-full text-4xl font-black outline-none bg-transparent">
+                <span class="text-xl font-black text-gray-300 italic">CDF</span>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4 mb-6">
+                <div class="bg-gray-50 p-3 rounded-xl">
+                    <p class="text-[8px] font-bold text-gray-400 uppercase">Minimum</p>
+                    <p class="text-xs font-black">5.200 CDF</p>
+                </div>
+                <div class="bg-gray-50 p-3 rounded-xl">
+                    <p class="text-[8px] font-bold text-gray-400 uppercase">Frais (Taxe)</p>
+                    <p class="text-xs font-black text-green-600">0 CDF</p>
+                </div>
+            </div>
+
+            <button onclick="soumettreRetraitFirebase()" id="btnRetrait" class="w-full bg-black text-white py-5 rounded-[2rem] font-black uppercase text-[11px] tracking-widest shadow-2xl active:scale-95 transition-all">
+                Soumettre la demande
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const session = JSON.parse(localStorage.getItem('sonny_session'));
+        const dbURL = "https://sonyy-9b565-default-rtdb.firebaseio.com";
+
+        if(!session) window.location.href = "index.html";
+
+        // --- CHARGEMENT INITIAL ---
+        async function loadProfileRetrait() {
+            try {
+                const res = await fetch(`${dbURL}/utilisateurs/${session.firebaseId}.json`);
+                const user = await res.json();
+
+                if(user.compteRetrait) {
+                    document.getElementById('formLiaison').classList.add('hidden');
+                    document.getElementById('affichageCompte').classList.remove('hidden');
+                    document.getElementById('labelNom').innerText = user.compteRetrait.nom;
+                    document.getElementById('labelNum').innerText = user.compteRetrait.numero;
+                }
+            } catch(e) { console.error(e); }
+        }
+
+        // --- LIAISON DU COMPTE ---
+        async function lierCompteFirebase() {
+            const nom = document.getElementById('nomCompte').value.trim();
+            const num = document.getElementById('numCompte').value.trim();
+            const btn = document.getElementById('btnLier');
+
+            if(!nom || num.length < 9) return alert("❌ Infos incomplètes !");
+
+            btn.disabled = true;
+            btn.innerHTML = "...";
+
+            try {
+                await fetch(`${dbURL}/utilisateurs/${session.firebaseId}/compteRetrait.json`, {
+                    method: 'PUT',
+                    body: JSON.stringify({ nom: nom, numero: num })
+                });
+                alert("✅ Compte de réception lié avec succès !");
+                loadProfileRetrait();
+            } catch(e) { alert("Erreur réseau"); btn.disabled = false; }
+        }
+
+        // --- SOUMISSION DU RETRAIT ---
+        async function soumettreRetraitFirebase() {
+            const montant = parseFloat(document.getElementById('montantInput').value);
+            const heure = new Date().getHours();
+            const btn = document.getElementById('btnRetrait');
+
+            // 1. Heures (9h-17h)
+            if(heure < 9 || heure >= 17) return alert("🕒 Retraits ouverts de 09h00 à 17h00.");
+
+            // 2. Minimum
+            if(montant < 5200 || isNaN(montant)) return alert("⚠️ Minimum 5.200 CDF.");
+
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Vérification...';
+
+            try {
+                // Vérifier Solde Réel sur Firebase
+                const res = await fetch(`${dbURL}/utilisateurs/${session.firebaseId}.json`);
+                const user = await res.json();
+
+                if(!user.compteRetrait) {
+                    alert("❌ Veuillez d'abord lier votre compte !");
+                    btn.disabled = false; return;
+                }
+
+                if(montant > user.solde) {
+                    alert("❌ Solde insuffisant ! Votre solde actuel : " + user.solde + " CDF");
+                    btn.disabled = false; return;
+                }
+
+                // Déduire le solde avant d'envoyer la demande (Sécurité)
+                const nouveauSolde = user.solde - montant;
+                await fetch(`${dbURL}/utilisateurs/${session.firebaseId}.json`, {
+                    method: 'PATCH',
+                    body: JSON.stringify({ solde: nouveauSolde })
+                });
+
+                // Créer la demande pour S SONY
+                const demande = {
+                    userId: session.firebaseId,
+                    telephoneCompte: session.telephone,
+                    montant: montant,
+                    receveurNom: user.compteRetrait.nom,
+                    receveurNum: user.compteRetrait.numero,
+                    date: new Date().toISOString(),
+                    status: "EN ATTENTE"
+                };
+
+                await fetch(`${dbURL}/retraits.json`, {
+                    method: 'POST',
+                    body: JSON.stringify(demande)
+                });
+
+                alert("✅ Demande soumise ! L'argent arrivera sur votre compte lié après validation.");
+                window.location.href = "compte.html";
+
+            } catch(e) { 
+                alert("Erreur serveur"); 
+                btn.disabled = false; 
+                btn.innerHTML = "Valider le retrait";
+            }
+        }
+
+        window.onload = loadProfileRetrait;
+    </script>
+</body>
+</html>
