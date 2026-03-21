@@ -73,10 +73,10 @@
 
         if(!session) window.location.href = "index.html";
 
-        // 1. Initialiser les infos d'invitation
+        // 1. Initialiser les infos d'invitation avec le nouveau lien
         const myInviteCode = session.telephone.replace("+243", "SNY");
         document.getElementById('codeSpan').innerText = myInviteCode;
-        document.getElementById('linkSpan').innerText = "https://sony8-drc.github.io/sonny/register.html?ref=" + myInviteCode;
+        document.getElementById('linkSpan').innerText = "https://sonny-drc-plus.github.io/sonny/register.html?ref=" + myInviteCode;
 
         function copyInvite() {
             navigator.clipboard.writeText(document.getElementById('linkSpan').innerText);
@@ -85,7 +85,6 @@
 
         // 2. Charger les membres de l'équipe depuis Firebase
         async function loadTeam(lvl) {
-            // UI Update
             [1, 2, 3].forEach(n => {
                 document.getElementById('btn'+n).classList.toggle('tab-active', n === lvl);
                 document.getElementById('btn'+n).classList.toggle('text-gray-400', n !== lvl);
@@ -101,10 +100,8 @@
                 let totalCommCalculated = 0;
 
                 for (let id in allUsers) {
-                    // Logique Simplifiée : On cherche ceux qui ont notre code comme parrain
                     if (allUsers[id].parrain === myInviteCode) {
                         members.push(allUsers[id]);
-                        // Commission fictive basée sur leurs investissements (à affiner selon tes achats réels)
                         totalCommCalculated += (allUsers[id].commissionsGenerees || 0);
                     }
                 }
