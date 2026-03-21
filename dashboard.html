@@ -9,116 +9,80 @@
     <style>
         body { background-color: #ffffff; font-family: -apple-system, sans-serif; margin: 0; padding-bottom: 100px; }
         
-        /* Bannière supérieure IMG_3730.jpeg */
         .header-image {
             background: url('IMG_3730.jpeg') no-repeat center center;
-            background-size: cover;
-            height: 200px;
-            position: relative;
-            padding: 15px;
+            background-size: cover; height: 200px; position: relative; padding: 15px;
         }
 
         .lv-badge {
-            background: #a855f7;
-            color: white;
-            padding: 2px 15px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: bold;
-            display: inline-block;
+            background: #a855f7; color: white; padding: 2px 15px;
+            border-radius: 20px; font-size: 14px; font-weight: bold; display: inline-block;
         }
 
         .blue-logo {
-            width: 55px; height: 55px;
-            background: #4a6fa5;
-            border-radius: 50%;
-            position: absolute; right: 20px; top: 30px;
+            width: 55px; height: 55px; background: #4a6fa5;
+            border-radius: 50%; position: absolute; right: 20px; top: 30px;
         }
 
-        /* Grille des montants */
-        .balance-section {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            padding: 25px 20px;
-        }
+        .balance-section { display: grid; grid-template-columns: 1fr 1fr; padding: 25px 20px; }
 
-        /* GRILLE DES ICÔNES (L'ERREUR ÉTAIT ICI) */
         .icon-menu {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            background: #fcfcfc;
-            border-top: 1px solid #f0f0f0;
-            border-bottom: 1px solid #f0f0f0;
-            padding: 15px 0;
+            display: grid; grid-template-columns: repeat(3, 1fr);
+            background: #fcfcfc; border-top: 1px solid #f0f0f0;
+            border-bottom: 1px solid #f0f0f0; padding: 15px 0;
         }
 
-        .icon-item { text-align: center; }
-        /* Style précis des icônes de ton modèle */
-        .icon-item i { 
-            font-size: 32px; 
-            color: #9ca3af; /* Gris bleuté comme l'original */
-            display: block;
-            margin-bottom: 5px;
-        }
+        .icon-item { text-align: center; cursor: pointer; }
+        .icon-item i { font-size: 32px; color: #9ca3af; display: block; margin-bottom: 5px; }
         .icon-item span { font-size: 11px; color: #6b7280; font-weight: 500; }
 
-        /* Bannière du milieu IMG_3731.jpeg */
         .promo-banner {
-            margin: 20px;
-            background: url('IMG_3731.jpeg') no-repeat center center;
-            background-size: cover;
-            height: 110px;
-            border-radius: 20px;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            padding-right: 25px;
+            margin: 20px; background: url('IMG_3731.jpeg') no-repeat center center;
+            background-size: cover; height: 110px; border-radius: 20px;
+            position: relative; display: flex; align-items: center;
+            justify-content: flex-end; padding-right: 25px;
         }
 
         .btn-aller {
-            background: white;
-            color: black;
-            padding: 4px 18px;
-            border-radius: 15px;
-            font-size: 13px;
-            font-weight: bold;
+            background: white; color: black; padding: 4px 18px;
+            border-radius: 15px; font-size: 13px; font-weight: bold;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
-        /* Navigation basse */
         .bottom-nav {
             position: fixed; bottom: 0; left: 0; right: 0;
-            background: white;
-            display: flex; justify-content: space-around;
-            padding: 10px 0;
-            border-top: 1px solid #eee;
-            z-index: 1000;
+            background: white; display: flex; justify-content: space-around;
+            padding: 10px 0; border-top: 1px solid #eee; z-index: 1000;
         }
         .nav-link { text-align: center; color: #9ca3af; font-size: 11px; text-decoration: none; }
         .nav-link.active { color: #000; }
         .nav-link i { font-size: 24px; display: block; margin-bottom: 2px; }
 
-        /* Modal Annonce */
+        /* Modal Annonce Style Sony */
         #modal {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.8);
+            position: fixed; inset: 0; background: rgba(0,0,0,0.85);
             display: flex; align-items: center; justify-content: center; z-index: 2000;
+            backdrop-filter: blur(5px);
         }
     </style>
 </head>
 <body>
 
     <div id="modal">
-        <div class="bg-white rounded-[2rem] w-[85%] max-w-sm overflow-hidden text-center shadow-2xl">
-            <div class="bg-black py-4">
-                <h2 class="text-white font-bold text-lg uppercase tracking-widest">Notification</h2>
+        <div class="bg-white rounded-[2.5rem] w-[90%] max-w-sm overflow-hidden shadow-2xl animate-in zoom-in duration-300">
+            <div class="bg-black py-5 text-center">
+                <h2 class="text-white font-black text-xl uppercase tracking-widest italic">SONNY RDC</h2>
             </div>
             <div class="p-8">
-                <p class="text-gray-500 text-sm mb-6">Rejoignez nos groupes officiels pour suivre vos gains.</p>
-                <a href="https://t.me/votre_groupe" class="block w-full bg-[#0088cc] text-white font-bold py-3 rounded-xl mb-3">
-                    <i class="fab fa-telegram-plane"></i> Groupe Telegram
+                <p class="text-gray-800 text-sm font-semibold leading-relaxed mb-6 text-justify">
+                    L’entreprise <span class="font-black">Sony</span> a été officiellement lancée en République Démocratique du Congo ce samedi 21 mars 2026. Elle offre aux Congolais l’opportunité de générer des revenus journaliers grâce à un système d’investissement en ligne.
+                    <br><br>
+                    En cas de difficulté, notre service client est disponible et peut être contacté directement à travers notre groupe Telegram.
+                </p>
+                <a href="https://t.me/+cKGj-rgcZ-M3NTc0" class="block w-full bg-[#0088cc] text-white font-black py-4 rounded-2xl mb-4 text-center shadow-lg shadow-blue-200 uppercase text-xs tracking-wider">
+                    <i class="fab fa-telegram-plane mr-2"></i> Rejoindre le Groupe Telegram
                 </a>
-                <button onclick="document.getElementById('modal').style.display='none'" class="mt-4 text-xs font-bold text-gray-400 uppercase underline">Fermer</button>
+                <button onclick="document.getElementById('modal').style.display='none'" class="w-full text-[10px] font-black text-gray-400 uppercase tracking-widest hover:text-black transition-colors">Fermer l'annonce</button>
             </div>
         </div>
     </div>
@@ -126,40 +90,40 @@
     <div class="header-image">
         <div class="flex items-center gap-1">
             <span class="text-white text-xl font-bold">+</span>
-            <div class="lv-badge">Lv1</div>
+            <div class="lv-badge" id="userLevel">Lv1</div>
         </div>
         <div class="blue-logo"></div>
     </div>
 
     <div class="balance-section">
         <div>
-            <h3 class="text-2xl font-bold">CDF 0</h3>
-            <p class="text-gray-400 text-sm mt-1">Solde du Compte</p>
+            <h3 class="text-2xl font-black" id="userBalance">0 CDF</h3>
+            <p class="text-gray-400 text-[10px] font-bold uppercase tracking-wider mt-1">Solde du Compte</p>
         </div>
         <div class="text-right">
-            <h3 class="text-2xl font-bold">CDF 0</h3>
-            <p class="text-gray-400 text-sm mt-1">Revenu Cumulé</p>
+            <h3 class="text-2xl font-black text-blue-600" id="userIncome">0 CDF</h3>
+            <p class="text-gray-400 text-[10px] font-bold uppercase tracking-wider mt-1">Revenu Cumulé</p>
         </div>
     </div>
 
     <div class="icon-menu">
-        <div class="icon-item">
+        <div class="icon-item" onclick="window.location.href='recharge.html'">
             <i class="fa-solid fa-sack-dollar"></i> <span>Recharger</span>
         </div>
-        <div class="icon-item">
+        <div class="icon-item" onclick="window.location.href='retrait.html'">
             <i class="fa-solid fa-cash-register"></i> <span>Retirer</span>
         </div>
-        <div class="icon-item">
+        <div class="icon-item" onclick="window.location.href='historique.html'">
             <i class="fa-solid fa-clipboard-list"></i> <span>Historique</span>
         </div>
     </div>
 
     <div class="promo-banner">
-        <button class="btn-aller">Aller</button>
+        <button class="btn-aller" onclick="window.location.href='produit.html'">Aller</button>
     </div>
 
     <nav class="bottom-nav">
-        <a href="#" class="nav-link active">
+        <a href="dashboard.html" class="nav-link active">
             <i class="fa-solid fa-house"></i>
             <span>Accueil</span>
         </a>
@@ -176,6 +140,23 @@
             <span>Mon compte</span>
         </a>
     </nav>
+
+    <script>
+        // Synchronisation avec ton console Firebase
+        const session = JSON.parse(localStorage.getItem('sonny_session'));
+        
+        if(!session) {
+            window.location.href = "index.html";
+        } else {
+            // Mettre à jour les montants en temps réel depuis ton console
+            fetch(`https://sonyy-9b565-default-rtdb.firebaseio.com/utilisateurs/${session.firebaseId}.json`)
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('userBalance').innerText = data.solde.toLocaleString() + " CDF";
+                document.getElementById('userIncome').innerText = (data.revenuCumule || 0).toLocaleString() + " CDF";
+            });
+        }
+    </script>
 
 </body>
 </html>
