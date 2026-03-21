@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SONNY | Historique</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body { background: #f8fafc; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
+        .glass-header { background: #000; color: white; border-bottom-left-radius: 2.5rem; border-bottom-right-radius: 2.5rem; }
+        .tab-btn { flex: 1; padding: 15px; font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; border-radius: 1.2rem; color: #94a3b8; border: 2px solid transparent; }
+        .tab-active { background: white; color: black; border-color: rgba(0,0,0,0.05); box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+        .trans-card { background: white; border-radius: 1.8rem; padding: 20px; border: 1px solid #f1f5f9; margin-bottom: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.01); }
+        .status-badge { font-size: 8px; font-weight: 900; padding: 5px 12px; border-radius: 50px; text-transform: uppercase; }
+        
+        /* Couleurs des statuts basées sur tes besoins */
+        .badge-attente { background: #fef3c7; color: #92400e; } /* Orange/Jaune */
+        .badge-approuvé { background: #dcfce7; color: #166534; } /* Vert */
+        .badge-rejeté { background: #fee2e2; color: #991b1b; } /* Rouge */
+    </style>
+</head>
+<body class="pb-28">
+
+    <div class="glass-header p-12 text-center shadow-2xl mb-8">
+        <h1 class="text-3xl font-black italic uppercase tracking-tighter">Historique</h1>
+        <p class="text-[9px] font-bold opacity-50 uppercase tracking-[0.4em] mt-2 italic text-blue-400">Suivi des transactions</p>
+    </div>
+
+    <div class="px-6">
+        <div class="bg-gray-200/50 p-2 rounded-[1.5rem] flex mb-10 border border-gray-100">
+            <button id="btnRecharge" onclick="switchTab('recharge')" class="tab-btn tab-active">Dépôts</button>
+            <button id="btnRetrait" onclick="switchTab('retrait')" class="tab-btn">Retraits</button>
+        </div>
+
+        <div id="transactionList" class="min-h-[400px]">
+            <div class="flex justify-center py-20 opacity-30">
+                <i class="fa-solid fa-circle-notch fa-spin text-3xl"></i>
+            </div>
+        </div>
+    </div>
+
+    <nav class="fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-md border-t border-gray-100 p-5 flex justify-around items-center z-50">
+        <a href="dashboard.html" class="flex flex-col items-center text-gray-400">
+            <i class="fa-solid fa-house text-xl"></i><span class="text-[9px] font-black mt-1 uppercase">Home</span>
+        </a>
+        <a href="recharge.html" class="flex flex-col items-center text-gray-400">
+            <i class="fa-solid fa-wallet text-xl"></i><span class="text-[9px] font-black mt-1 uppercase">Dépôt</span>
+        </a>
+        <a href="historique.html" class="flex flex-col items-center text-black">
+            <i class="fa-solid fa-receipt text-xl"></i><span class="text-[9px] font-black mt-1 uppercase">Factures</span>
+        </a>
+        <a href="compte.html" class="flex flex-col items-center text-gray-400">
+            <i class="fa-solid fa-circle-user text-xl"></i><span class="text-[9px] font-black mt-1 uppercase">Moi</span>
+        </a>
+    </nav>
+
+    <script>
+        const session = JSON.parse(localStorage.getItem('sonny_session'));
+        const dbURL = "https://sonyy-9b565-default-rtdb.firebaseio.com";
+
+        if(!session) window.location.href = "index.html";
+
+        async function switchTab(type) {
+            // Mise à jour visuelle des boutons
+            document.getElementById('btnRecharge').className = (type === 'recharge' ? 'tab-btn tab-active' : 'tab-btn');
+            document.getElementById('btnRetrait').className = (type === 'retrait' ? 'tab-btn tab-active' : 'tab-btn');
+            
+            const listContainer = document.getElementById('transactionList');
+            listContainer.innerHTML = '<div class="flex justify-center py-20 opacity-30"><i class="fa-solid fa-circle-notch fa-spin text-3xl"></i></div>';
+
+            try {
+                // On récupère soit les recharges, soit les retraits
+                const endpoint = type === 'recharge' ? 'recharges' : 'retraits';
+                const res = await fetch(`${dbURL}/${endpoint}.json`);
+                const allData = await res.json();
+                
+                listContainer.innerHTML = ""; // Vider le loader
+
+                let userTransactions = [];
+
+                // Filtrer uniquement les transactions de cet utilisateur
+                if(allData) {
+                    for(let id in allData) {
+                        if(allData[id].userId === session.firebaseId) {
+                            userTransactions.push(allData[id]);
+                        }
+                    }
+                }
+
+                if(userTransactions.length === 0) {
+                    listContainer.innerHTML = `
+                        <div class="flex flex-col items-center justify-center py-24 opacity-10">
+                            <i class="fa-solid fa-box-open text-6xl mb-4"></i>
+                            <p class="text-[10px] font-black uppercase tracking-[0.3em]">Aucune transaction</p>
+                        </div>`;
+                    return;
+                }
+
+                // Affichage (Trié par date du plus récent au plus ancien)
+                userTransactions.reverse().forEach(item => {
+                    // Gestion dynamique des classes de statut
+                    const statusText = item.status || "EN ATTENTE";
+                    const statusClass = "badge-" + statusText.toLowerCase().replace(" ", "");
+                    
+                    // Formattage de la date (simple)
+                    const dateAffichage = new Date(item.date).toLocaleDateString('fr-FR', {
+                        day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit'
+                    });
+
+                    listContainer.innerHTML += `
+                        <div class="trans-card">
+                            <div class="flex justify-between items-start mb-4">
+                                <div>
+                                    <p class="text-[10px] font-black uppercase text-gray-400 mb-1 tracking-tighter">${dateAffichage}</p>
+                                    <p class="text-xl font-black text-black tracking-tighter">${parseFloat(item.montant).toLocaleString()} <span class="text-[10px] text-gray-400 font-bold">CDF</span></p>
+                                </div>
+                                <span class="status-badge ${statusClass}">${statusText}</span>
+                            </div>
+                            <div class="bg-gray-50/80 p-4 rounded-2xl flex items-center justify-between border border-gray-100">
+                                <p class="text-[9px] font-black text-gray-400 uppercase tracking-widest">Via : ${type === 'recharge' ? item.reseau : 'Mobile Money'}</p>
+                                <p class="text-[10px] font-black text-blue-600 font-mono italic">${type === 'recharge' ? 'ID: VERIF' : item.receveurNum}</p>
+                            </div>
+                        </div>
+                    `;
+                });
+
+            } catch (e) {
+                listContainer.innerHTML = `<p class="text-center text-red-400 text-[10px] font-bold">Erreur de chargement. Vérifiez votre connexion.</p>`;
+            }
+        }
+
+        // Lancement immédiat
+        window.onload = () => switchTab('recharge');
+    </script>
+</body>
+</html>
