@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SONNY | Inscription</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;
+            background: url('IMG_3676.jpeg') no-repeat center center fixed;
+            background-size: cover; font-family: system-ui, sans-serif;
+        }
+        .register-card {
+            background: rgba(0, 0, 0, 0.45); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2); width: 100%; max-width: 400px;
+        }
+        .input-group { background: rgba(0, 0, 0, 0.7); border: 1px solid rgba(255, 255, 255, 0.1); color: white; }
+        input { background: transparent; border: none; outline: none; color: white; width: 100%; padding: 14px; }
+    </style>
+</head>
+<body class="p-6">
+    <div class="register-card p-8 rounded-[2.5rem] shadow-2xl text-center">
+        <div class="mb-8">
+            <h1 class="text-5xl font-black italic tracking-tighter text-white uppercase">SONNY</h1>
+            <p class="text-[9px] uppercase tracking-[0.4em] text-gray-300 mt-2 font-bold italic">Nouveau Compte RDC</p>
+        </div>
+
+        <form id="regForm" class="space-y-4 text-left">
+            <div>
+                <label class="text-[10px] uppercase font-black text-white/70 ml-1">Numéro (+243)</label>
+                <div class="input-group flex items-center px-4 rounded-xl">
+                    <span class="text-white font-bold mr-2">+243</span>
+                    <input type="tel" id="tel" placeholder="812345678" maxlength="9" required>
+                </div>
+            </div>
+            <div class="space-y-3">
+                <input type="password" id="p1" placeholder="Mot de passe (6 car.)" maxlength="6" class="input-group px-4 rounded-xl w-full" required>
+                <input type="password" id="p2" placeholder="Confirmer mot de passe" maxlength="6" class="input-group px-4 rounded-xl w-full" required>
+            </div>
+            <div class="space-y-1">
+                <label class="text-[10px] uppercase font-black text-white/70 ml-1">Code Invitation</label>
+                <input type="text" id="inv" placeholder="Saisir le code" class="input-group px-4 rounded-xl w-full" required>
+            </div>
+            <button type="submit" class="bg-white text-black font-black w-full py-4 rounded-xl text-[11px] uppercase mt-4">S'inscrire</button>
+        </form>
+
+        <div class="mt-6 text-center text-white/60 text-xs">
+            Déjà inscrit ? <a href="index.html" class="text-white font-bold underline ml-1">Se connecter</a>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('regForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            if(document.getElementById('p1').value !== document.getElementById('p2').value) {
+                alert("❌ Les mots de passe ne correspondent pas !");
+                return;
+            }
+            alert("✅ Inscription réussie !");
+            window.location.href = "index.html"; // Retour à la connexion
+        });
+    </script>
+</body>
+</html>
