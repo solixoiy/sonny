@@ -7,71 +7,47 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        body { background-color: #ffffff; font-family: -apple-system, BlinkMacSystemFont, sans-serif; margin: 0; padding-bottom: 100px; }
+        body { background-color: #ffffff; font-family: -apple-system, sans-serif; margin: 0; padding-bottom: 100px; }
         
-        /* Header avec ton image IMG_3730.jpeg */
         .profile-header {
-            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('IMG_3730.jpeg');
-            background-size: cover;
-            background-position: center;
-            height: 220px;
-            color: white;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            border-bottom-left-radius: 2.5rem;
-            border-bottom-right-radius: 2.5rem;
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('IMG_3730.jpeg');
+            background-size: cover; background-position: center;
+            height: 240px; color: white; display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            border-bottom-left-radius: 3rem; border-bottom-right-radius: 3rem;
         }
 
         .avatar-circle {
-            width: 75px; height: 75px;
-            background: rgba(255,255,255,0.2);
-            backdrop-filter: blur(10px);
-            border-radius: 50%;
+            width: 85px; height: 85px; background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(15px); border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            border: 2px solid rgba(255,255,255,0.5);
-            margin-bottom: 10px;
+            border: 3px solid rgba(255,255,255,0.6); margin-bottom: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
         }
 
-        /* Carte de solde */
         .balance-card {
-            background: white;
-            border-radius: 25px;
-            margin: -45px 20px 20px 20px;
-            padding: 25px;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-            border: 1px solid #f0f0f0;
-            position: relative;
-            z-index: 10;
+            background: white; border-radius: 30px; margin: -50px 20px 20px 20px;
+            padding: 30px; text-align: center;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            border: 1px solid rgba(0,0,0,0.05); position: relative; z-index: 10;
         }
 
-        /* Menu Icônes - Style identique au Dashboard */
         .icon-menu {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            margin-top: 25px;
-            padding-top: 20px;
-            border-top: 1px solid #f5f5f5;
+            display: grid; grid-template-columns: repeat(3, 1fr);
+            margin-top: 25px; padding-top: 25px; border-top: 1px solid #f8f8f8;
         }
-        .icon-item { display: flex; flex-direction: column; align-items: center; gap: 5px; }
-        .icon-item i { font-size: 28px; color: #9ca3af; }
-        .icon-item span { font-size: 10px; color: #6b7280; font-weight: bold; text-transform: uppercase; }
+        .icon-item { display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer; }
+        .icon-item i { font-size: 26px; color: #9ca3af; transition: color 0.3s; }
+        .icon-item:hover i { color: #000; }
+        .icon-item span { font-size: 9px; color: #6b7280; font-weight: 900; text-transform: uppercase; letter-spacing: 0.5px; }
 
-        /* Équipements */
         .product-card {
-            background: #f9fafb;
-            border: 1px solid #f0f0f0;
-            border-radius: 20px;
-            padding: 15px;
-            margin-bottom: 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            background: #ffffff; border: 1px solid #f1f1f1; border-radius: 22px;
+            padding: 18px; margin-bottom: 12px; display: flex;
+            justify-content: space-between; align-items: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
         }
 
-        /* Navigation basse */
         .bottom-nav {
             position: fixed; bottom: 0; left: 0; right: 0;
             background: white; display: flex; justify-content: space-around;
@@ -85,114 +61,119 @@
 
     <div class="profile-header">
         <div class="avatar-circle">
-            <i class="fas fa-user text-3xl"></i>
+            <i class="fas fa-user-tie text-4xl"></i>
         </div>
-        <h2 class="font-black italic text-xl uppercase tracking-tighter">Partenaire Sonny</h2>
-        <p class="text-[10px] opacity-80 tracking-[0.3em]">+243 ID: 810000000</p>
+        <h2 class="font-black italic text-2xl uppercase tracking-tighter" id="userName">Chargement...</h2>
+        <p class="text-[11px] font-bold opacity-90 tracking-[0.2em]" id="userPhone">ID: +243 -- --- ----</p>
     </div>
 
     <div class="balance-card">
-        <p class="text-gray-400 text-[10px] uppercase font-black tracking-widest mb-1">Solde Total</p>
+        <p class="text-gray-400 text-[10px] uppercase font-black tracking-[0.2em] mb-2">Solde Disponible</p>
         <h1 id="displaySolde" class="text-4xl font-black text-black">0 CDF</h1>
         
         <div class="icon-menu">
-            <div class="icon-item">
+            <div class="icon-item" onclick="window.location.href='recharge.html'">
                 <i class="fa-solid fa-sack-dollar"></i>
                 <span>Recharger</span>
             </div>
-            <div class="icon-item">
+            <div class="icon-item" onclick="window.location.href='retrait.html'">
                 <i class="fa-solid fa-cash-register"></i>
                 <span>Retirer</span>
             </div>
-            <div class="icon-item">
+            <div class="icon-item" onclick="window.location.href='historique.html'">
                 <i class="fa-solid fa-clipboard-list"></i>
                 <span>Historique</span>
             </div>
         </div>
     </div>
 
-    <div class="px-6 mt-8">
-        <h3 class="text-[11px] font-black uppercase text-gray-400 mb-4 tracking-widest flex items-center gap-2">
-            <i class="fa-solid fa-microchip"></i> Mes équipements actifs
-        </h3>
+    <div class="px-6 mt-10">
+        <div class="flex justify-between items-center mb-5">
+            <h3 class="text-[11px] font-black uppercase text-gray-400 tracking-widest flex items-center gap-2">
+                <i class="fa-solid fa-microchip text-blue-500"></i> Mes équipements (22j)
+            </h3>
+            <span class="bg-blue-50 text-blue-600 text-[9px] font-black px-3 py-1 rounded-full uppercase italic">En ligne</span>
+        </div>
+        
         <div id="listeMesProduits" class="space-y-3">
+            <div class="text-center py-10 opacity-20">
+                <i class="fa-solid fa-circle-notch fa-spin text-3xl"></i>
             </div>
+        </div>
+
+        <button onclick="logout()" class="w-full mt-10 py-4 border-2 border-red-50 text-red-400 text-[10px] font-black uppercase tracking-[0.3em] rounded-2xl hover:bg-red-50 transition-all">
+            Déconnexion
+        </button>
     </div>
 
     <nav class="bottom-nav">
-        <a href="dashboard.html" class="nav-link">
-            <i class="fa-solid fa-house text-2xl mb-1"></i><br>Accueil
-        </a>
-        <a href="produit.html" class="nav-link">
-            <i class="fa-solid fa-camera text-2xl mb-1"></i><br>Produit
-        </a>
-        <a href="compte.html" class="nav-link active">
-            <i class="fa-solid fa-user text-2xl mb-1"></i><br>Compte
-        </a>
+        <a href="dashboard.html" class="nav-link"><i class="fa-solid fa-house text-2xl mb-1"></i><br>Accueil</a>
+        <a href="produit.html" class="nav-link"><i class="fa-solid fa-camera text-2xl mb-1"></i><br>Produit</a>
+        <a href="equipe.html" class="nav-link"><i class="fa-solid fa-users text-2xl mb-1"></i><br>Équipe</a>
+        <a href="compte.html" class="nav-link active"><i class="fa-solid fa-user text-2xl mb-1"></i><br>Compte</a>
     </nav>
 
     <script>
-        // --- SÉCURITÉ MISE À ZÉRO ---
-        // Si c'est la première fois ou si on veut forcer le 0
-        if (!localStorage.getItem('userSolde')) {
-            localStorage.setItem('userSolde', 0);
-        }
+        const session = JSON.parse(localStorage.getItem('sonny_session'));
+        const dbURL = "https://sonyy-9b565-default-rtdb.firebaseio.com";
 
-        function rafraichir() {
-            // Lecture du solde
-            let solde = parseFloat(localStorage.getItem('userSolde')) || 0;
-            document.getElementById('displaySolde').innerText = solde.toLocaleString() + " CDF";
+        if(!session) { window.location.href = "index.html"; }
 
-            // Lecture des produits
-            let mesProduits = JSON.parse(localStorage.getItem('mesProduits')) || [];
-            const container = document.getElementById('listeMesProduits');
-            container.innerHTML = "";
+        async function initProfile() {
+            try {
+                // 1. Infos de base
+                document.getElementById('userName').innerText = "Partenaire Sony";
+                document.getElementById('userPhone').innerText = "ID: " + session.telephone;
 
-            if (mesProduits.length === 0) {
-                container.innerHTML = `
-                    <div class="text-center py-12 opacity-20 border-2 border-dashed border-gray-200 rounded-[2.5rem]">
-                        <i class="fa-solid fa-box-open text-5xl mb-3"></i>
-                        <p class="text-[10px] font-black uppercase">Aucun investissement actif</p>
-                    </div>`;
-            } else {
-                const maintenant = new Date().getTime();
-                let soldeAJour = false;
+                // 2. Récupérer Solde Réel
+                const uRes = await fetch(`${dbURL}/utilisateurs/${session.firebaseId}.json`);
+                const user = await uRes.json();
+                document.getElementById('displaySolde').innerText = user.solde.toLocaleString() + " CDF";
 
-                mesProduits.forEach((p) => {
-                    // Vérification des 24 heures (86400000 ms)
-                    if (maintenant - p.dernierCollecte >= 86400000) {
-                        solde += p.gain;
-                        p.dernierCollecte = maintenant;
-                        soldeAJour = true;
-                    }
+                // 3. Récupérer les Investissements Réels
+                const iRes = await fetch(`${dbURL}/investissements/${session.firebaseId}.json`);
+                const products = await iRes.json();
 
-                    container.innerHTML += `
-                        <div class="product-card">
-                            <div class="flex items-center gap-4">
-                                <div class="w-12 h-12 bg-black rounded-2xl flex items-center justify-center text-white font-bold text-[10px]">VIP</div>
-                                <div>
-                                    <p class="font-black text-xs uppercase text-black">${p.nom}</p>
-                                    <p class="text-[10px] text-green-600 font-bold">+${p.gain.toLocaleString()} CDF / 24h</p>
-                                </div>
-                            </div>
-                            <div class="text-right">
-                                <p class="text-[9px] font-black text-blue-500 uppercase italic tracking-tighter">En cours</p>
-                            </div>
+                const container = document.getElementById('listeMesProduits');
+                container.innerHTML = "";
+
+                if (!products || Object.keys(products).length === 0) {
+                    container.innerHTML = `
+                        <div class="text-center py-12 opacity-30 border-2 border-dashed border-gray-100 rounded-[2.5rem]">
+                            <i class="fa-solid fa-box-open text-5xl mb-3 text-gray-300"></i>
+                            <p class="text-[10px] font-black uppercase tracking-widest">Aucun pack activé</p>
+                            <a href="produit.html" class="text-blue-500 text-[9px] font-black underline mt-2 block">VOIR LES PRODUITS</a>
                         </div>`;
-                });
-
-                if (soldeAJour) {
-                    localStorage.setItem('userSolde', solde);
-                    localStorage.setItem('mesProduits', JSON.stringify(mesProduits));
-                    document.getElementById('displaySolde').innerText = solde.toLocaleString() + " CDF";
+                } else {
+                    for (let key in products) {
+                        const p = products[key];
+                        container.innerHTML += `
+                            <div class="product-card">
+                                <div class="flex items-center gap-4">
+                                    <div class="w-12 h-12 bg-black rounded-2xl flex items-center justify-center text-white shadow-lg">
+                                        <i class="fa-solid fa-video text-lg"></i>
+                                    </div>
+                                    <div>
+                                        <p class="font-black text-xs uppercase text-black tracking-tighter">${p.nom}</p>
+                                        <p class="text-[9px] text-green-600 font-bold italic">+${p.gainJournalier.toLocaleString()} CDF / JOUR</p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-[8px] font-black text-gray-400 uppercase mb-1">Statut</p>
+                                    <span class="text-[9px] font-black text-blue-500 bg-blue-50 px-2 py-1 rounded-md uppercase">Actif</span>
+                                </div>
+                            </div>`;
+                    }
                 }
-            }
+            } catch (e) { console.error(e); }
         }
 
-        // Lancement immédiat
-        rafraichir();
-        // Vérification automatique toutes les 30 secondes
-        setInterval(rafraichir, 30000);
+        function logout() {
+            localStorage.clear();
+            window.location.href = "index.html";
+        }
+
+        window.onload = initProfile;
     </script>
 </body>
 </html>
