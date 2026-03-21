@@ -8,49 +8,70 @@
     <style>
         body {
             margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;
-            background: url('IMG_3676.jpeg') no-repeat center center fixed;
+            background: #000 url('IMG_3676.jpeg') no-repeat center center fixed;
             background-size: cover; font-family: system-ui, sans-serif;
         }
         .register-card {
-            background: rgba(0, 0, 0, 0.45); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.2); width: 100%; max-width: 400px;
+            background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1); width: 100%; max-width: 400px;
         }
-        .input-group { background: rgba(0, 0, 0, 0.7); border: 1px solid rgba(255, 255, 255, 0.1); color: white; }
+        .input-group { background: rgba(0, 0, 0, 0.5); border: 1px solid rgba(255, 255, 255, 0.2); color: white; }
         input { background: transparent; border: none; outline: none; color: white; width: 100%; padding: 14px; }
+        input::placeholder { color: rgba(255,255,255,0.4); }
     </style>
 </head>
 <body class="p-6">
     <div class="register-card p-8 rounded-[2.5rem] shadow-2xl text-center">
         <div class="mb-8">
             <h1 class="text-5xl font-black italic tracking-tighter text-white uppercase">SONNY</h1>
-            <p class="text-[9px] uppercase tracking-[0.4em] text-gray-300 mt-2 font-bold italic">Nouveau Compte RDC</p>
+            <p class="text-[9px] uppercase tracking-[0.4em] text-blue-400 mt-2 font-bold italic">Nouveau Compte RDC</p>
         </div>
 
         <form id="regForm" class="space-y-4 text-left">
             <div>
-                <label class="text-[10px] uppercase font-black text-white/70 ml-1">Numéro (+243)</label>
-                <div class="input-group flex items-center px-4 rounded-xl">
+                <label class="text-[10px] uppercase font-black text-white/70 ml-1 tracking-widest">Numéro (+243)</label>
+                <div class="input-group flex items-center px-4 rounded-2xl">
                     <span class="text-white font-bold mr-2">+243</span>
                     <input type="tel" id="tel" placeholder="812345678" maxlength="9" required>
                 </div>
             </div>
+            
             <div class="space-y-3">
-                <input type="password" id="p1" placeholder="Mot de passe (6 car.)" maxlength="6" class="input-group px-4 rounded-xl w-full" required>
-                <input type="password" id="p2" placeholder="Confirmer mot de passe" maxlength="6" class="input-group px-4 rounded-xl w-full" required>
+                <input type="password" id="p1" placeholder="Mot de passe (6 car.)" maxlength="6" class="input-group px-4 rounded-2xl w-full" required>
+                <input type="password" id="p2" placeholder="Confirmer mot de passe" maxlength="6" class="input-group px-4 rounded-2xl w-full" required>
             </div>
+
             <div class="space-y-1">
-                <label class="text-[10px] uppercase font-black text-white/70 ml-1">Code Invitation</label>
-                <input type="text" id="inv" placeholder="Saisir le code" class="input-group px-4 rounded-xl w-full" required>
+                <label class="text-[10px] uppercase font-black text-white/70 ml-1 tracking-widest">Code Invitation</label>
+                <input type="text" id="inv" placeholder="Code de parrainage" class="input-group px-4 rounded-2xl w-full font-bold text-blue-400" required>
             </div>
-            <button type="submit" id="submitBtn" class="bg-white text-black font-black w-full py-4 rounded-xl text-[11px] uppercase mt-4">S'inscrire</button>
+
+            <button type="submit" id="submitBtn" class="bg-white text-black font-black w-full py-4 rounded-2xl text-[11px] uppercase mt-4 shadow-xl active:scale-95 transition-all">
+                Créer mon compte
+            </button>
         </form>
 
-        <div class="mt-6 text-center text-white/60 text-xs">
-            Déjà inscrit ? <a href="index.html" class="text-white font-bold underline ml-1">Se connecter</a>
+        <div class="mt-8 text-center text-white/40 text-xs">
+            Déjà inscrit ? <a href="index.html" class="text-white font-bold underline ml-1 italic text-blue-400">Se connecter</a>
         </div>
     </div>
 
     <script>
+        // --- 1. FONCTION POUR RÉCUPÉRER LE CODE DANS L'URL ---
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const refCode = urlParams.get('ref'); // Cherche ?ref=...
+            
+            if (refCode) {
+                const invInput = document.getElementById('inv');
+                invInput.value = refCode;
+                // Optionnel : On peut le mettre en lecture seule pour éviter que l'utilisateur le change
+                // invInput.readOnly = true; 
+                console.log("Code de parrainage détecté : " + refCode);
+            }
+        };
+
+        // --- 2. GESTION DE L'INSCRIPTION ---
         document.getElementById('regForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
@@ -60,41 +81,40 @@
             const inviteCode = document.getElementById('inv').value;
             const btn = document.getElementById('submitBtn');
 
+            if(pass1.length < 6) {
+                alert("❌ Le mot de passe doit faire 6 chiffres.");
+                return;
+            }
+
             if(pass1 !== pass2) {
                 alert("❌ Les mots de passe ne correspondent pas !");
                 return;
             }
 
-            btn.innerText = "CRÉATION EN COURS...";
+            btn.innerText = "PATIENTEZ...";
             btn.disabled = true;
 
-            // Données utilisateur pour ton console Firebase
             const userData = {
                 telephone: "+243" + phone,
                 motDePasse: pass1,
-                codeInvitation: inviteCode,
+                parrain: inviteCode, // On enregistre qui est le parrain
                 solde: 0,
-                droitRetrait: false,
-                dateInscription: new Date().toLocaleString()
+                dateInscription: new Date().toISOString(),
+                status: "Actif"
             };
 
-            // Envoi vers ton console Realtime Database
             fetch('https://sonyy-9b565-default-rtdb.firebaseio.com/utilisateurs.json', {
                 method: 'POST',
                 body: JSON.stringify(userData)
             })
-            .then(response => {
-                if(response.ok) {
-                    alert("✅ Inscription réussie sur SONNY !");
+            .then(res => {
+                if(res.ok) {
+                    alert("✅ Bienvenue sur SONNY RDC !");
                     window.location.href = "index.html";
-                } else {
-                    alert("❌ Erreur serveur.");
-                    btn.innerText = "S'INSCRIRE";
-                    btn.disabled = false;
-                }
+                } else { throw new Error(); }
             })
-            .catch(error => {
-                alert("❌ Erreur de connexion.");
+            .catch(() => {
+                alert("❌ Erreur. Vérifiez votre connexion.");
                 btn.innerText = "S'INSCRIRE";
                 btn.disabled = false;
             });
