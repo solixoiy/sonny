@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SONNY | VIP Investissement</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body { background-color: #f8f9fa; font-family: sans-serif; padding-bottom: 100px; }
+        .vip-card {
+            background: white; border-radius: 20px; overflow: hidden;
+            margin-bottom: 20px; border: 1px solid #eee;
+        }
+        .vip-img { width: 100%; height: 200px; object-fit: cover; }
+        .btn-buy {
+            background: #000; color: white; width: 100%; padding: 12px;
+            border-radius: 12px; font-weight: bold; font-size: 14px;
+        }
+        .bottom-nav {
+            position: fixed; bottom: 0; left: 0; right: 0;
+            background: white; display: flex; justify-content: space-around;
+            padding: 12px 0; border-top: 1px solid #eee; z-index: 1000;
+        }
+    </style>
+</head>
+<body class="p-4">
+
+    <div class="mb-6">
+        <h1 class="text-2xl font-black italic">PRODUITS VIP</h1>
+        <p class="text-gray-500 text-xs uppercase">Cycle de revenus : 22 Jours</p>
+    </div>
+
+    <div id="vip-container"></div>
+
+    <nav class="bottom-nav">
+        <a href="dashboard.html" class="flex flex-col items-center text-gray-400">
+            <i class="fa-solid fa-house text-xl"></i><span class="text-[10px]">Accueil</span>
+        </a>
+        <a href="produit.html" class="flex flex-col items-center text-black">
+            <i class="fa-solid fa-camera text-xl"></i><span class="text-[10px]">Produit</span>
+        </a>
+    </nav>
+
+    <script>
+        // Configuration selon ton plan et tes images
+        const vipData = [
+            { id: 1, img: "IMG_3677.jpeg", price: 18000, daily: 3700 },
+            { id: 2, img: "IMG_3678.jpeg", price: 35000, daily: 7500 },
+            { id: 3, img: "IMG_3679.jpeg", price: 50000, daily: 11200 },
+            { id: 4, img: "IMG_3680.jpeg", price: 75000, daily: 15800 },
+            { id: 5, img: "IMG_3681.jpeg", price: 100000, daily: 25000 },
+            { id: 6, img: "IMG_3682.jpeg", price: 150000, daily: 38000 },
+            { id: 7, img: "IMG_3735.jpeg", price: 300000, daily: 80000 },
+            { id: 8, img: "IMG_3736.jpeg", price: 500000, daily: 110000 },
+            { id: 9, img: "IMG_3737.jpeg", price: 800000, daily: 280000 },
+            { id: 10, img: "IMG_3738.jpeg", price: 1000000, daily: 320000 },
+            { id: 11, img: "IMG_3740.jpeg", price: 2000000, daily: 700000 },
+            { id: 12, img: "IMG_3742.jpeg", price: 3000000, daily: 950000 }
+        ];
+
+        const container = document.getElementById('vip-container');
+
+        vipData.forEach(vip => {
+            const totalProfit = vip.daily * 22; // Calcul sur 22 jours
+            container.innerHTML += `
+                <div class="vip-card">
+                    <img src="${vip.img}" class="vip-img" alt="VIP ${vip.id}">
+                    <div class="p-4">
+                        <div class="flex justify-between items-center mb-2">
+                            <h2 class="font-bold text-lg text-purple-700">VIP ${vip.id}</h2>
+                            <span class="font-black text-xl">${vip.price.toLocaleString()} CDF</span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2 mb-4 bg-gray-50 p-3 rounded-lg text-center">
+                            <div><p class="text-[10px] text-gray-400">Journalier</p><p class="font-bold text-green-600">${vip.daily.toLocaleString()} CDF</p></div>
+                            <div><p class="text-[10px] text-gray-400">Total (22j)</p><p class="font-bold">${totalProfit.toLocaleString()} CDF</p></div>
+                        </div>
+                        <button onclick="acheterProduit(${vip.id}, ${vip.price}, ${vip.daily})" class="btn-buy">ACTIVER VIP ${vip.id}</button>
+                    </div>
+                </div>
+            `;
+        });
+
+        // LOGIQUE D'ACHAT ET REVENUS AUTOMATIQUES
+        function acheterProduit(id, prix, gain) {
+            let solde = parseFloat(localStorage.getItem('userSolde')) || 0;
+            
+            if (solde >= prix) {
+                solde -= prix;
+                localStorage.setItem('userSolde', solde);
+                
+                // Enregistrement du produit acheté avec l'heure actuelle
+                let mesProduits = JSON.parse(localStorage.getItem('mesProduits')) || [];
+                mesProduits.push({
+                    id: id,
+                    nom: "VIP " + id,
+                    gain: gain,
+                    dateAchat: new Date().getTime(),
+                    dernierCollecte: new Date().getTime()
+                });
+                localStorage.setItem('mesProduits', JSON.stringify(mesProduits));
+                
+                alert("Félicitations ! VIP " + id + " activé. Revenus générés toutes les 24h.");
+                window.location.href = "compte.html";
+            } else {
+                alert("Solde insuffisant ! Veuillez recharger votre compte.");
+            }
+        }
+    </script>
+</body>
+</html>
