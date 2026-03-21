@@ -8,62 +8,21 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         body { background-color: #ffffff; font-family: -apple-system, sans-serif; margin: 0; padding-bottom: 100px; }
-        
-        .header-image {
-            background: url('IMG_3730.jpeg') no-repeat center center;
-            background-size: cover; height: 200px; position: relative; padding: 15px;
-        }
-
-        .lv-badge {
-            background: #a855f7; color: white; padding: 2px 15px;
-            border-radius: 20px; font-size: 14px; font-weight: bold; display: inline-block;
-        }
-
-        .blue-logo {
-            width: 55px; height: 55px; background: #4a6fa5;
-            border-radius: 50%; position: absolute; right: 20px; top: 30px;
-        }
-
+        .header-image { background: url('IMG_3730.jpeg') no-repeat center center; background-size: cover; height: 200px; position: relative; padding: 15px; }
+        .lv-badge { background: #a855f7; color: white; padding: 2px 15px; border-radius: 20px; font-size: 14px; font-weight: bold; display: inline-block; }
+        .blue-logo { width: 55px; height: 55px; background: #4a6fa5; border-radius: 50%; position: absolute; right: 20px; top: 30px; }
         .balance-section { display: grid; grid-template-columns: 1fr 1fr; padding: 25px 20px; }
-
-        .icon-menu {
-            display: grid; grid-template-columns: repeat(3, 1fr);
-            background: #fcfcfc; border-top: 1px solid #f0f0f0;
-            border-bottom: 1px solid #f0f0f0; padding: 15px 0;
-        }
-
+        .icon-menu { display: grid; grid-template-columns: repeat(3, 1fr); background: #fcfcfc; border-top: 1px solid #f0f0f0; border-bottom: 1px solid #f0f0f0; padding: 15px 0; }
         .icon-item { text-align: center; cursor: pointer; }
         .icon-item i { font-size: 32px; color: #9ca3af; display: block; margin-bottom: 5px; }
         .icon-item span { font-size: 11px; color: #6b7280; font-weight: 500; }
-
-        .promo-banner {
-            margin: 20px; background: url('IMG_3731.jpeg') no-repeat center center;
-            background-size: cover; height: 110px; border-radius: 20px;
-            position: relative; display: flex; align-items: center;
-            justify-content: flex-end; padding-right: 25px;
-        }
-
-        .btn-aller {
-            background: white; color: black; padding: 4px 18px;
-            border-radius: 15px; font-size: 13px; font-weight: bold;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        .bottom-nav {
-            position: fixed; bottom: 0; left: 0; right: 0;
-            background: white; display: flex; justify-content: space-around;
-            padding: 10px 0; border-top: 1px solid #eee; z-index: 1000;
-        }
+        .promo-banner { margin: 20px; background: url('IMG_3731.jpeg') no-repeat center center; background-size: cover; height: 110px; border-radius: 20px; position: relative; display: flex; align-items: center; justify-content: flex-end; padding-right: 25px; }
+        .btn-aller { background: white; color: black; padding: 4px 18px; border-radius: 15px; font-size: 13px; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: white; display: flex; justify-content: space-around; padding: 10px 0; border-top: 1px solid #eee; z-index: 1000; }
         .nav-link { text-align: center; color: #9ca3af; font-size: 11px; text-decoration: none; }
         .nav-link.active { color: #000; }
         .nav-link i { font-size: 24px; display: block; margin-bottom: 2px; }
-
-        /* Modal Annonce Style Sony */
-        #modal {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.85);
-            display: flex; align-items: center; justify-content: center; z-index: 2000;
-            backdrop-filter: blur(5px);
-        }
+        #modal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: flex; align-items: center; justify-content: center; z-index: 2000; backdrop-filter: blur(5px); }
     </style>
 </head>
 <body>
@@ -79,10 +38,10 @@
                     <br><br>
                     En cas de difficulté, notre service client est disponible et peut être contacté directement à travers notre groupe Telegram.
                 </p>
-                <a href="https://t.me/+cKGj-rgcZ-M3NTc0" class="block w-full bg-[#0088cc] text-white font-black py-4 rounded-2xl mb-4 text-center shadow-lg shadow-blue-200 uppercase text-xs tracking-wider">
+                <a href="https://t.me/+cKGj-rgcZ-M3NTc0" class="block w-full bg-[#0088cc] text-white font-black py-4 rounded-2xl mb-4 text-center shadow-lg uppercase text-xs">
                     <i class="fab fa-telegram-plane mr-2"></i> Rejoindre le Groupe Telegram
                 </a>
-                <button onclick="document.getElementById('modal').style.display='none'" class="w-full text-[10px] font-black text-gray-400 uppercase tracking-widest hover:text-black transition-colors">Fermer l'annonce</button>
+                <button onclick="document.getElementById('modal').style.display='none'" class="w-full text-[10px] font-black text-gray-400 uppercase tracking-widest hover:text-black">Fermer</button>
             </div>
         </div>
     </div>
@@ -97,11 +56,11 @@
 
     <div class="balance-section">
         <div>
-            <h3 class="text-2xl font-black" id="userBalance">0 CDF</h3>
+            <h3 class="text-2xl font-black" id="userBalance">... CDF</h3>
             <p class="text-gray-400 text-[10px] font-bold uppercase tracking-wider mt-1">Solde du Compte</p>
         </div>
         <div class="text-right">
-            <h3 class="text-2xl font-black text-blue-600" id="userIncome">0 CDF</h3>
+            <h3 class="text-2xl font-black text-blue-600" id="userIncome">... CDF</h3>
             <p class="text-gray-400 text-[10px] font-bold uppercase tracking-wider mt-1">Revenu Cumulé</p>
         </div>
     </div>
@@ -123,40 +82,82 @@
     </div>
 
     <nav class="bottom-nav">
-        <a href="dashboard.html" class="nav-link active">
-            <i class="fa-solid fa-house"></i>
-            <span>Accueil</span>
-        </a>
-        <a href="produit.html" class="nav-link">
-            <i class="fa-solid fa-camera"></i>
-            <span>Produit</span>
-        </a>
-        <a href="equipe.html" class="nav-link">
-            <i class="fa-solid fa-users"></i>
-            <span>Équipe</span>
-        </a>
-        <a href="compte.html" class="nav-link">
-            <i class="fa-solid fa-user"></i>
-            <span>Mon compte</span>
-        </a>
+        <a href="dashboard.html" class="nav-link active"><i class="fa-solid fa-house"></i><span>Accueil</span></a>
+        <a href="produit.html" class="nav-link"><i class="fa-solid fa-camera"></i><span>Produit</span></a>
+        <a href="equipe.html" class="nav-link"><i class="fa-solid fa-users"></i><span>Équipe</span></a>
+        <a href="compte.html" class="nav-link"><i class="fa-solid fa-user"></i><span>Mon compte</span></a>
     </nav>
 
     <script>
-        // Synchronisation avec ton console Firebase
         const session = JSON.parse(localStorage.getItem('sonny_session'));
-        
-        if(!session) {
-            window.location.href = "index.html";
-        } else {
-            // Mettre à jour les montants en temps réel depuis ton console
-            fetch(`https://sonyy-9b565-default-rtdb.firebaseio.com/utilisateurs/${session.firebaseId}.json`)
-            .then(res => res.json())
-            .then(data => {
-                document.getElementById('userBalance').innerText = data.solde.toLocaleString() + " CDF";
-                document.getElementById('userIncome').innerText = (data.revenuCumule || 0).toLocaleString() + " CDF";
-            });
-        }
-    </script>
+        const dbURL = "https://sonyy-9b565-default-rtdb.firebaseio.com";
 
+        if(!session) { window.location.href = "index.html"; }
+
+        async function syncAndCollect() {
+            try {
+                // 1. Récupérer données utilisateur
+                const uRes = await fetch(`${dbURL}/utilisateurs/${session.firebaseId}.json`);
+                const user = await uRes.json();
+
+                // 2. Récupérer ses investissements
+                const iRes = await fetch(`${dbURL}/investissements/${session.firebaseId}.json`);
+                const products = await iRes.json();
+
+                let totalGainToCredit = 0;
+                let hasUpdates = false;
+
+                if (products) {
+                    const now = new Date();
+                    for (let key in products) {
+                        const prod = products[key];
+                        const lastCollect = new Date(prod.dernierCollecte);
+                        const expiry = new Date(prod.expireLe);
+
+                        // Si pas expiré
+                        if (now < expiry) {
+                            const diffHours = (now - lastCollect) / (1000 * 60 * 60);
+                            
+                            if (diffHours >= 24) {
+                                const days = Math.floor(diffHours / 24);
+                                totalGainToCredit += prod.gainJournalier * days;
+                                
+                                // Mettre à jour la date de collecte dans Firebase pour ce produit
+                                const nextCollectDate = new Date(lastCollect.getTime() + (days * 24 * 60 * 60 * 1000));
+                                await fetch(`${dbURL}/investissements/${session.firebaseId}/${key}.json`, {
+                                    method: 'PATCH',
+                                    body: JSON.stringify({ dernierCollecte: nextCollectDate.toISOString() })
+                                });
+                                hasUpdates = true;
+                            }
+                        }
+                    }
+                }
+
+                // 3. Si gains détectés, mettre à jour le solde global
+                let finalSolde = user.solde;
+                let finalIncome = user.revenuCumule || 0;
+
+                if (totalGainToCredit > 0) {
+                    finalSolde += totalGainToCredit;
+                    finalIncome += totalGainToCredit;
+                    
+                    await fetch(`${dbURL}/utilisateurs/${session.firebaseId}.json`, {
+                        method: 'PATCH',
+                        body: JSON.stringify({ solde: finalSolde, revenuCumule: finalIncome })
+                    });
+                    alert(`Gains du jour récupérés : +${totalGainToCredit.toLocaleString()} CDF`);
+                }
+
+                // 4. Mise à jour de l'affichage
+                document.getElementById('userBalance').innerText = finalSolde.toLocaleString() + " CDF";
+                document.getElementById('userIncome').innerText = finalIncome.toLocaleString() + " CDF";
+
+            } catch (e) { console.error("Erreur de synchro", e); }
+        }
+
+        // Exécution au chargement
+        window.onload = syncAndCollect;
+    </script>
 </body>
 </html>
