@@ -8,42 +8,34 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         body { background-color: #f8f9fa; font-family: sans-serif; padding-bottom: 100px; }
-        .vip-card {
-            background: white; border-radius: 20px; overflow: hidden;
-            margin-bottom: 20px; border: 1px solid #eee;
-        }
-        .vip-img { width: 100%; height: 200px; object-fit: cover; }
-        .btn-buy {
-            background: #000; color: white; width: 100%; padding: 12px;
-            border-radius: 12px; font-weight: bold; font-size: 14px;
-        }
-        .bottom-nav {
-            position: fixed; bottom: 0; left: 0; right: 0;
-            background: white; display: flex; justify-content: space-around;
-            padding: 12px 0; border-top: 1px solid #eee; z-index: 1000;
-        }
+        .vip-card { background: white; border-radius: 20px; overflow: hidden; margin-bottom: 20px; border: 1px solid #eee; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+        .vip-img { width: 100%; height: 210px; object-fit: cover; }
+        .btn-buy { background: #000; color: white; width: 100%; padding: 15px; border-radius: 15px; font-weight: 900; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; }
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: white; display: flex; justify-content: space-around; padding: 12px 0; border-top: 1px solid #eee; z-index: 1000; }
     </style>
 </head>
 <body class="p-4">
 
-    <div class="mb-6">
-        <h1 class="text-2xl font-black italic">PRODUITS VIP</h1>
-        <p class="text-gray-500 text-xs uppercase">Cycle de revenus : 22 Jours</p>
+    <div class="mb-6 pt-4">
+        <h1 class="text-3xl font-black italic tracking-tighter">SONNY <span class="text-blue-600">VIP</span></h1>
+        <p class="text-gray-400 text-[10px] font-bold uppercase tracking-widest">Cycle de revenus : 22 Jours</p>
     </div>
 
     <div id="vip-container"></div>
 
     <nav class="bottom-nav">
         <a href="dashboard.html" class="flex flex-col items-center text-gray-400">
-            <i class="fa-solid fa-house text-xl"></i><span class="text-[10px]">Accueil</span>
+            <i class="fa-solid fa-house text-xl"></i><span class="text-[10px] font-bold mt-1">Accueil</span>
         </a>
         <a href="produit.html" class="flex flex-col items-center text-black">
-            <i class="fa-solid fa-camera text-xl"></i><span class="text-[10px]">Produit</span>
+            <i class="fa-solid fa-camera text-xl"></i><span class="text-[10px] font-bold mt-1">Produit</span>
+        </a>
+        <a href="compte.html" class="flex flex-col items-center text-gray-400">
+            <i class="fa-solid fa-user text-xl"></i><span class="text-[10px] font-bold mt-1">Compte</span>
         </a>
     </nav>
 
     <script>
-        // Configuration selon ton plan et tes images
         const vipData = [
             { id: 1, img: "IMG_3677.jpeg", price: 18000, daily: 3700 },
             { id: 2, img: "IMG_3678.jpeg", price: 35000, daily: 7500 },
@@ -60,50 +52,67 @@
         ];
 
         const container = document.getElementById('vip-container');
+        const session = JSON.parse(localStorage.getItem('sonny_session'));
 
         vipData.forEach(vip => {
-            const totalProfit = vip.daily * 22; // Calcul sur 22 jours
+            const totalProfit = vip.daily * 22;
             container.innerHTML += `
                 <div class="vip-card">
-                    <img src="${vip.img}" class="vip-img" alt="VIP ${vip.id}">
-                    <div class="p-4">
-                        <div class="flex justify-between items-center mb-2">
-                            <h2 class="font-bold text-lg text-purple-700">VIP ${vip.id}</h2>
-                            <span class="font-black text-xl">${vip.price.toLocaleString()} CDF</span>
+                    <img src="${vip.img}" class="vip-img">
+                    <div class="p-5">
+                        <div class="flex justify-between items-center mb-4">
+                            <h2 class="font-black text-xl uppercase tracking-tighter">VIP ${vip.id}</h2>
+                            <span class="font-black text-xl text-blue-600">${vip.price.toLocaleString()} CDF</span>
                         </div>
-                        <div class="grid grid-cols-2 gap-2 mb-4 bg-gray-50 p-3 rounded-lg text-center">
-                            <div><p class="text-[10px] text-gray-400">Journalier</p><p class="font-bold text-green-600">${vip.daily.toLocaleString()} CDF</p></div>
-                            <div><p class="text-[10px] text-gray-400">Total (22j)</p><p class="font-bold">${totalProfit.toLocaleString()} CDF</p></div>
+                        <div class="grid grid-cols-2 gap-4 mb-6 bg-slate-50 p-4 rounded-2xl border border-gray-100">
+                            <div><p class="text-[9px] font-black text-gray-400 uppercase">Gain/Jour</p><p class="font-black text-green-600 text-sm">${vip.daily.toLocaleString()} CDF</p></div>
+                            <div><p class="text-[9px] font-black text-gray-400 uppercase">Gain Total</p><p class="font-black text-gray-800 text-sm">${totalProfit.toLocaleString()} CDF</p></div>
                         </div>
-                        <button onclick="acheterProduit(${vip.id}, ${vip.price}, ${vip.daily})" class="btn-buy">ACTIVER VIP ${vip.id}</button>
+                        <button onclick="acheterProduit(${vip.id}, ${vip.price}, ${vip.daily})" class="btn-buy">Investir Maintenant</button>
                     </div>
                 </div>
             `;
         });
 
-        // LOGIQUE D'ACHAT ET REVENUS AUTOMATIQUES
-        function acheterProduit(id, prix, gain) {
-            let solde = parseFloat(localStorage.getItem('userSolde')) || 0;
-            
-            if (solde >= prix) {
-                solde -= prix;
-                localStorage.setItem('userSolde', solde);
+        async function acheterProduit(id, prix, gain) {
+            if(!session) return window.location.href="index.html";
+
+            // 1. Vérifier le solde sur Firebase
+            const response = await fetch(`https://sonyy-9b565-default-rtdb.firebaseio.com/utilisateurs/${session.firebaseId}.json`);
+            const user = await response.json();
+
+            if (user.solde >= prix) {
+                const nouveauSolde = user.solde - prix;
                 
-                // Enregistrement du produit acheté avec l'heure actuelle
-                let mesProduits = JSON.parse(localStorage.getItem('mesProduits')) || [];
-                mesProduits.push({
-                    id: id,
+                // 2. Mettre à jour le solde et ajouter le produit sur Firebase
+                const achat = {
+                    vipId: id,
                     nom: "VIP " + id,
-                    gain: gain,
-                    dateAchat: new Date().getTime(),
-                    dernierCollecte: new Date().getTime()
+                    gainJournalier: gain,
+                    dateAchat: new Date().toISOString(),
+                    expireLe: new Date(Date.now() + 22 * 24 * 60 * 60 * 1000).toISOString(),
+                    dernierCollecte: new Date().toISOString()
+                };
+
+                // Update Solde
+                await fetch(`https://sonyy-9b565-default-rtdb.firebaseio.com/utilisateurs/${session.firebaseId}.json`, {
+                    method: 'PATCH',
+                    body: JSON.stringify({ 
+                        solde: nouveauSolde,
+                        droitRetrait: true // L'achat débloque le retrait
+                    })
                 });
-                localStorage.setItem('mesProduits', JSON.stringify(mesProduits));
-                
-                alert("Félicitations ! VIP " + id + " activé. Revenus générés toutes les 24h.");
+
+                // Ajouter à la liste des investissements de l'utilisateur
+                await fetch(`https://sonyy-9b565-default-rtdb.firebaseio.com/investissements/${session.firebaseId}.json`, {
+                    method: 'POST',
+                    body: JSON.stringify(achat)
+                });
+
+                alert(`Félicitations ! Le pack VIP ${id} est activé.`);
                 window.location.href = "compte.html";
             } else {
-                alert("Solde insuffisant ! Veuillez recharger votre compte.");
+                alert("Solde insuffisant ! Allez dans 'Recharge' pour alimenter votre compte.");
             }
         }
     </script>
