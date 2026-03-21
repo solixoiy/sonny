@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SONNY | Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body { background-color: #ffffff; font-family: -apple-system, sans-serif; margin: 0; padding-bottom: 100px; }
+        
+        /* Bannière supérieure IMG_3730.jpeg */
+        .header-image {
+            background: url('IMG_3730.jpeg') no-repeat center center;
+            background-size: cover;
+            height: 200px;
+            position: relative;
+            padding: 15px;
+        }
+
+        .lv-badge {
+            background: #a855f7;
+            color: white;
+            padding: 2px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .blue-logo {
+            width: 55px; height: 55px;
+            background: #4a6fa5;
+            border-radius: 50%;
+            position: absolute; right: 20px; top: 30px;
+        }
+
+        /* Grille des montants */
+        .balance-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            padding: 25px 20px;
+        }
+
+        /* GRILLE DES ICÔNES (L'ERREUR ÉTAIT ICI) */
+        .icon-menu {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            background: #fcfcfc;
+            border-top: 1px solid #f0f0f0;
+            border-bottom: 1px solid #f0f0f0;
+            padding: 15px 0;
+        }
+
+        .icon-item { text-align: center; }
+        /* Style précis des icônes de ton modèle */
+        .icon-item i { 
+            font-size: 32px; 
+            color: #9ca3af; /* Gris bleuté comme l'original */
+            display: block;
+            margin-bottom: 5px;
+        }
+        .icon-item span { font-size: 11px; color: #6b7280; font-weight: 500; }
+
+        /* Bannière du milieu IMG_3731.jpeg */
+        .promo-banner {
+            margin: 20px;
+            background: url('IMG_3731.jpeg') no-repeat center center;
+            background-size: cover;
+            height: 110px;
+            border-radius: 20px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 25px;
+        }
+
+        .btn-aller {
+            background: white;
+            color: black;
+            padding: 4px 18px;
+            border-radius: 15px;
+            font-size: 13px;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        /* Navigation basse */
+        .bottom-nav {
+            position: fixed; bottom: 0; left: 0; right: 0;
+            background: white;
+            display: flex; justify-content: space-around;
+            padding: 10px 0;
+            border-top: 1px solid #eee;
+            z-index: 1000;
+        }
+        .nav-link { text-align: center; color: #9ca3af; font-size: 11px; text-decoration: none; }
+        .nav-link.active { color: #000; }
+        .nav-link i { font-size: 24px; display: block; margin-bottom: 2px; }
+
+        /* Modal Annonce */
+        #modal {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.8);
+            display: flex; align-items: center; justify-content: center; z-index: 2000;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="modal">
+        <div class="bg-white rounded-[2rem] w-[85%] max-w-sm overflow-hidden text-center shadow-2xl">
+            <div class="bg-black py-4">
+                <h2 class="text-white font-bold text-lg uppercase tracking-widest">Notification</h2>
+            </div>
+            <div class="p-8">
+                <p class="text-gray-500 text-sm mb-6">Rejoignez nos groupes officiels pour suivre vos gains.</p>
+                <a href="https://t.me/votre_groupe" class="block w-full bg-[#0088cc] text-white font-bold py-3 rounded-xl mb-3">
+                    <i class="fab fa-telegram-plane"></i> Groupe Telegram
+                </a>
+                <button onclick="document.getElementById('modal').style.display='none'" class="mt-4 text-xs font-bold text-gray-400 uppercase underline">Fermer</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-image">
+        <div class="flex items-center gap-1">
+            <span class="text-white text-xl font-bold">+</span>
+            <div class="lv-badge">Lv1</div>
+        </div>
+        <div class="blue-logo"></div>
+    </div>
+
+    <div class="balance-section">
+        <div>
+            <h3 class="text-2xl font-bold">CDF 0</h3>
+            <p class="text-gray-400 text-sm mt-1">Solde du Compte</p>
+        </div>
+        <div class="text-right">
+            <h3 class="text-2xl font-bold">CDF 0</h3>
+            <p class="text-gray-400 text-sm mt-1">Revenu Cumulé</p>
+        </div>
+    </div>
+
+    <div class="icon-menu">
+        <div class="icon-item">
+            <i class="fa-solid fa-sack-dollar"></i> <span>Recharger</span>
+        </div>
+        <div class="icon-item">
+            <i class="fa-solid fa-cash-register"></i> <span>Retirer</span>
+        </div>
+        <div class="icon-item">
+            <i class="fa-solid fa-clipboard-list"></i> <span>Historique</span>
+        </div>
+    </div>
+
+    <div class="promo-banner">
+        <button class="btn-aller">Aller</button>
+    </div>
+
+    <nav class="bottom-nav">
+        <a href="#" class="nav-link active">
+            <i class="fa-solid fa-house"></i>
+            <span>Accueil</span>
+        </a>
+        <a href="produit.html" class="nav-link">
+            <i class="fa-solid fa-camera"></i>
+            <span>Produit</span>
+        </a>
+        <a href="equipe.html" class="nav-link">
+            <i class="fa-solid fa-users"></i>
+            <span>Équipe</span>
+        </a>
+        <a href="compte.html" class="nav-link">
+            <i class="fa-solid fa-user"></i>
+            <span>Mon compte</span>
+        </a>
+    </nav>
+
+</body>
+</html>
