@@ -7,39 +7,12 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        body { 
-            margin: 0; 
-            font-family: -apple-system, sans-serif; 
-            background: url('IMG_3730.jpeg') no-repeat center center fixed;
-            background-size: cover;
-            min-height: 100vh;
-        }
-        
-        /* Overlay pour rendre l'arrière-plan plus pro */
-        .overlay {
-            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(10px);
-            z-index: -1;
-        }
-
-        .glass-card {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 25px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
-        }
-
-        .tab-active {
-            background: #000 !important;
-            color: #fff !important;
-        }
-
-        .bottom-nav {
-            position: fixed; bottom: 0; left: 0; right: 0;
-            background: white; display: flex; justify-content: space-around;
-            padding: 15px 0; border-top: 1px solid #eee; z-index: 1000;
-        }
+        body { margin: 0; font-family: -apple-system, sans-serif; background: url('IMG_3730.jpeg') no-repeat center center fixed; background-size: cover; min-height: 100vh; }
+        .overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(10px); z-index: -1; }
+        .glass-card { background: rgba(255, 255, 255, 0.95); border-radius: 25px; border: 1px solid rgba(255, 255, 255, 0.3); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05); }
+        .tab-active { background: #000 !important; color: #fff !important; }
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: white; display: flex; justify-content: space-around; padding: 15px 0; border-top: 1px solid #eee; z-index: 1000; }
+        .member-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid #f0f0f0; }
     </style>
 </head>
 <body class="pb-24">
@@ -53,23 +26,21 @@
     <div class="px-5 space-y-6">
         <div class="glass-card p-6 -mt-10">
             <p class="text-[11px] font-black text-gray-400 uppercase mb-4 tracking-widest text-center">Invitez vos amis</p>
-            
             <div class="bg-gray-50 p-4 rounded-2xl border border-dashed border-gray-300 mb-4 flex items-center justify-between">
-                <div class="truncate mr-4">
+                <div class="truncate mr-4 text-left">
                     <p class="text-[9px] text-gray-400 font-bold uppercase mb-1">Votre lien unique</p>
-                    <span id="linkSpan" class="text-xs font-bold text-black">https://sony8-drc.github.io/sonny/register?ref=...</span>
+                    <span id="linkSpan" class="text-xs font-bold text-black italic">Chargement...</span>
                 </div>
                 <button onclick="copyInvite()" class="bg-black text-white text-[10px] font-black px-4 py-3 rounded-xl shadow-lg active:scale-95 transition-all">COPIER</button>
             </div>
-            
-            <p class="text-center text-[10px] font-bold text-gray-500 uppercase">Code d'invitation : <span id="codeSpan" class="text-black font-black">----</span></p>
+            <p class="text-center text-[10px] font-bold text-gray-500 uppercase tracking-widest">Code : <span id="codeSpan" class="text-black font-black">---</span></p>
         </div>
 
         <div class="grid grid-cols-2 gap-4">
             <div class="glass-card p-5 text-center">
                 <i class="fa-solid fa-coins text-yellow-500 mb-2"></i>
                 <p class="text-[9px] font-black text-gray-400 uppercase">Commissions</p>
-                <p id="totalComm" class="text-xl font-black">0 CDF</p>
+                <p id="totalComm" class="text-xl font-black text-blue-600">0 CDF</p>
             </div>
             <div class="glass-card p-5 text-center">
                 <i class="fa-solid fa-users text-blue-500 mb-2"></i>
@@ -80,74 +51,97 @@
 
         <div class="glass-card p-4">
             <div class="flex gap-2 mb-6 bg-gray-100 p-1.5 rounded-2xl">
-                <button id="btn1" onclick="showLevel(1)" class="tab-active flex-1 py-3 rounded-xl text-[10px] font-black uppercase transition-all">LV1 (25%)</button>
-                <button id="btn2" onclick="showLevel(2)" class="flex-1 py-3 rounded-xl text-[10px] font-black uppercase transition-all text-gray-400">LV2 (2%)</button>
-                <button id="btn3" onclick="showLevel(3)" class="flex-1 py-3 rounded-xl text-[10px] font-black uppercase transition-all text-gray-400">LV3 (1%)</button>
+                <button id="btn1" onclick="loadTeam(1)" class="tab-active flex-1 py-3 rounded-xl text-[10px] font-black uppercase transition-all">LV1 (25%)</button>
+                <button id="btn2" onclick="loadTeam(2)" class="flex-1 py-3 rounded-xl text-[10px] font-black uppercase transition-all text-gray-400">LV2 (2%)</button>
+                <button id="btn3" onclick="loadTeam(3)" class="flex-1 py-3 rounded-xl text-[10px] font-black uppercase transition-all text-gray-400">LV3 (1%)</button>
             </div>
-
-            <div id="membersList" class="space-y-3 min-h-[200px]">
-                <div class="flex flex-col items-center justify-center py-10 opacity-30">
-                    <i class="fa-solid fa-user-group text-4xl mb-3"></i>
-                    <p class="text-[10px] font-black uppercase">Aucun membre enregistré</p>
+            <div id="membersList" class="space-y-1 min-h-[200px]">
                 </div>
-            </div>
         </div>
     </div>
 
     <nav class="bottom-nav">
-        <a href="https://sony8-drc.github.io/sonny/dashboard.html" class="flex flex-col items-center text-gray-400">
-            <i class="fa-solid fa-house text-2xl mb-1"></i><span class="text-[10px] font-bold">Accueil</span>
-        </a>
-        <a href="https://sony8-drc.github.io/sonny/produit.html" class="flex flex-col items-center text-gray-400">
-            <i class="fa-solid fa-camera text-2xl mb-1"></i><span class="text-[10px] font-bold">Produit</span>
-        </a>
-        <a href="https://sony8-drc.github.io/sonny/equipe.html" class="flex flex-col items-center text-black">
-            <i class="fa-solid fa-users text-2xl mb-1"></i><span class="text-[10px] font-bold">Équipe</span>
-        </a>
-        <a href="https://sony8-drc.github.io/sonny/compte.html" class="flex flex-col items-center text-gray-400">
-            <i class="fa-solid fa-user text-2xl mb-1"></i><span class="text-[10px] font-bold">Compte</span>
-        </a>
+        <a href="dashboard.html" class="flex flex-col items-center text-gray-400"><i class="fa-solid fa-house text-2xl mb-1"></i><span class="text-[10px] font-bold">Accueil</span></a>
+        <a href="produit.html" class="flex flex-col items-center text-gray-400"><i class="fa-solid fa-camera text-2xl mb-1"></i><span class="text-[10px] font-bold">Produit</span></a>
+        <a href="equipe.html" class="flex flex-col items-center text-black"><i class="fa-solid fa-users text-2xl mb-1"></i><span class="text-[10px] font-bold">Équipe</span></a>
+        <a href="compte.html" class="flex flex-col items-center text-gray-400"><i class="fa-solid fa-user text-2xl mb-1"></i><span class="text-[10px] font-bold">Compte</span></a>
     </nav>
 
     <script>
-        // 1. Initialisation du Code d'invitation
-        let userCode = localStorage.getItem('sonnyInviteCode');
-        if(!userCode) {
-            userCode = "SNY" + Math.floor(1000 + Math.random() * 9000);
-            localStorage.setItem('sonnyInviteCode', userCode);
-        }
-        document.getElementById('codeSpan').innerText = userCode;
-        document.getElementById('linkSpan').innerText = "https://sony8-drc.github.io/sonny/register?ref=" + userCode;
+        const session = JSON.parse(localStorage.getItem('sonny_session'));
+        const dbURL = "https://sonyy-9b565-default-rtdb.firebaseio.com";
 
-        // 2. Fonction Copier
+        if(!session) window.location.href = "index.html";
+
+        // 1. Initialiser les infos d'invitation
+        const myInviteCode = session.telephone.replace("+243", "SNY");
+        document.getElementById('codeSpan').innerText = myInviteCode;
+        document.getElementById('linkSpan').innerText = "https://sony8-drc.github.io/sonny/register.html?ref=" + myInviteCode;
+
         function copyInvite() {
-            const link = document.getElementById('linkSpan').innerText;
-            navigator.clipboard.writeText(link);
-            alert("Lien de parrainage copié !");
+            navigator.clipboard.writeText(document.getElementById('linkSpan').innerText);
+            alert("✅ Lien de parrainage copié !");
         }
 
-        // 3. Gestion des onglets
-        function showLevel(lvl) {
-            // Reset styles
+        // 2. Charger les membres de l'équipe depuis Firebase
+        async function loadTeam(lvl) {
+            // UI Update
             [1, 2, 3].forEach(n => {
-                document.getElementById('btn'+n).classList.remove('tab-active');
-                document.getElementById('btn'+n).classList.add('text-gray-400');
+                document.getElementById('btn'+n).classList.toggle('tab-active', n === lvl);
+                document.getElementById('btn'+n).classList.toggle('text-gray-400', n !== lvl);
             });
-            // Active current
-            document.getElementById('btn'+lvl).classList.add('tab-active');
-            document.getElementById('btn'+lvl).classList.remove('text-gray-400');
-            
-            // Logique d'affichage des membres (à connecter à Firebase plus tard)
+
             const list = document.getElementById('membersList');
-            list.innerHTML = `<div class="flex flex-col items-center justify-center py-10 opacity-30">
-                <i class="fa-solid fa-user-group text-4xl mb-3"></i>
-                <p class="text-[10px] font-black uppercase">Aucun membre au niveau ${lvl}</p>
-            </div>`;
+            list.innerHTML = `<p class="text-center py-10 text-[10px] font-bold text-gray-400 uppercase">Synchronisation...</p>`;
+
+            try {
+                const res = await fetch(`${dbURL}/utilisateurs.json`);
+                const allUsers = await res.json();
+                let members = [];
+                let totalCommCalculated = 0;
+
+                for (let id in allUsers) {
+                    // Logique Simplifiée : On cherche ceux qui ont notre code comme parrain
+                    if (allUsers[id].parrain === myInviteCode) {
+                        members.push(allUsers[id]);
+                        // Commission fictive basée sur leurs investissements (à affiner selon tes achats réels)
+                        totalCommCalculated += (allUsers[id].commissionsGenerees || 0);
+                    }
+                }
+
+                if (members.length === 0) {
+                    list.innerHTML = `<div class="flex flex-col items-center justify-center py-10 opacity-30">
+                        <i class="fa-solid fa-user-group text-4xl mb-3"></i>
+                        <p class="text-[10px] font-black uppercase">Aucun membre au niveau ${lvl}</p>
+                    </div>`;
+                } else {
+                    list.innerHTML = "";
+                    members.forEach(m => {
+                        const maskPhone = m.telephone.substring(0, 7) + "****";
+                        list.innerHTML += `
+                            <div class="member-item">
+                                <div>
+                                    <p class="text-xs font-black">${maskPhone}</p>
+                                    <p class="text-[9px] text-gray-400 font-bold uppercase">${m.dateInscription || 'Membre Actif'}</p>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-xs font-black text-green-600">+${(m.commissionsGenerees || 0).toLocaleString()} CDF</p>
+                                    <p class="text-[8px] text-gray-400 font-black uppercase">Commission</p>
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+
+                document.getElementById('totalTeam').innerText = members.length;
+                document.getElementById('totalComm').innerText = totalCommCalculated.toLocaleString() + " CDF";
+
+            } catch (e) {
+                console.error(e);
+            }
         }
 
-        // 4. Initialisation des données
-        document.getElementById('totalComm').innerText = (parseFloat(localStorage.getItem('totalCommissions')) || 0).toLocaleString() + " CDF";
-        document.getElementById('totalTeam').innerText = (parseInt(localStorage.getItem('teamSize')) || 0);
+        window.onload = () => loadTeam(1);
     </script>
 </body>
 </html>
