@@ -76,7 +76,7 @@
         // 1. Initialiser les infos d'invitation avec le nouveau lien
         const myInviteCode = session.telephone.replace("+243", "SNY");
         document.getElementById('codeSpan').innerText = myInviteCode;
-        document.getElementById('linkSpan').innerText = "https://sonny-drc-plus.github.io/sonny/register.html?ref=" + myInviteCode;
+        document.getElementById('linkSpan').innerText = "https://invest08.github.io/sonny/register.html?ref=" + myInviteCode;
 
         function copyInvite() {
             navigator.clipboard.writeText(document.getElementById('linkSpan').innerText);
