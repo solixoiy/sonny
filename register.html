@@ -3,56 +3,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SONNY | Inscription</title>
+    <title>CHARGE POINT | Inscription</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
         body {
-            margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;
-            background: #000 url('IMG_3676.jpeg') no-repeat center center fixed;
-            background-size: cover; font-family: system-ui, sans-serif;
+            margin: 0; 
+            min-height: 100vh; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            background: #000 url('IMG_6517.jpeg') no-repeat center center fixed;
+            background-size: cover; 
+            font-family: 'Poppins', sans-serif;
         }
         .register-card {
-            background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1); width: 100%; max-width: 400px;
+            background: rgba(0, 0, 0, 0.75); 
+            backdrop-filter: blur(20px); 
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(249, 115, 22, 0.3);
+            width: 100%; 
+            max-width: 420px;
+            box-sizing: border-box;
         }
-        .input-group { background: rgba(0, 0, 0, 0.5); border: 1px solid rgba(255, 255, 255, 0.2); color: white; }
-        input { background: transparent; border: none; outline: none; color: white; width: 100%; padding: 14px; }
+        .input-group { 
+            background: rgba(0, 0, 0, 0.6); 
+            border: 1px solid rgba(255, 255, 255, 0.2); 
+            color: white; 
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+        .input-group:focus-within {
+            border-color: #f97316;
+            box-shadow: 0 0 10px rgba(249, 115, 22, 0.2);
+        }
+        input { 
+            background: transparent; 
+            border: none; 
+            outline: none; 
+            color: white; 
+            width: 100%; 
+            padding: 18px; 
+            font-size: 16px; 
+        }
         input::placeholder { color: rgba(255,255,255,0.4); }
     </style>
 </head>
-<body class="p-6">
-    <div class="register-card p-8 rounded-[2.5rem] shadow-2xl text-center">
-        <div class="mb-8">
-            <h1 class="text-5xl font-black italic tracking-tighter text-white uppercase">SONNY</h1>
-            <p class="text-[9px] uppercase tracking-[0.4em] text-blue-400 mt-2 font-bold italic">Nouveau Compte RDC</p>
+<body class="p-4">
+
+    <div class="register-card p-8 sm:p-10 rounded-[2.5rem] shadow-2xl">
+        <div class="mb-8 text-center">
+            <h1 class="text-4xl font-black tracking-tight text-white uppercase">CHARGE POINT</h1>
+            <p class="text-[11px] uppercase tracking-[0.4em] text-orange-500 mt-2 font-bold">Nouveau Compte RDC</p>
         </div>
 
-        <form id="regForm" class="space-y-4 text-left">
+        <form id="regForm" class="space-y-5">
             <div>
-                <label class="text-[10px] uppercase font-black text-white/70 ml-1 tracking-widest">Numéro (+243)</label>
-                <div class="input-group flex items-center px-4 rounded-2xl">
-                    <span class="text-white font-bold mr-2">+243</span>
+                <label class="text-[11px] uppercase font-black text-white/70 ml-1 tracking-widest block mb-1">Numéro (+243)</label>
+                <div class="input-group px-4 rounded-2xl">
+                    <span class="text-white font-bold text-lg select-none">+243</span>
                     <input type="tel" id="tel" placeholder="812345678" maxlength="9" required>
                 </div>
             </div>
             
-            <div class="space-y-3">
-                <input type="password" id="p1" placeholder="Mot de passe (6 car.)" maxlength="6" class="input-group px-4 rounded-2xl w-full" required>
-                <input type="password" id="p2" placeholder="Confirmer mot de passe" maxlength="6" class="input-group px-4 rounded-2xl w-full" required>
+            <div class="space-y-4">
+                <div>
+                    <label class="text-[11px] uppercase font-black text-white/70 ml-1 tracking-widest block mb-1">Mot de passe</label>
+                    <div class="input-group rounded-2xl">
+                        <input type="password" id="p1" placeholder="Mot de passe (6 car.)" maxlength="6" required>
+                    </div>
+                </div>
+                <div>
+                    <label class="text-[11px] uppercase font-black text-white/70 ml-1 tracking-widest block mb-1">Confirmation</label>
+                    <div class="input-group rounded-2xl">
+                        <input type="password" id="p2" placeholder="Confirmer mot de passe" maxlength="6" required>
+                    </div>
+                </div>
             </div>
 
-            <div class="space-y-1">
-                <label class="text-[10px] uppercase font-black text-white/70 ml-1 tracking-widest">Code Invitation</label>
-                <input type="text" id="inv" placeholder="Code de parrainage" class="input-group px-4 rounded-2xl w-full font-bold text-blue-400" required>
+            <div class="pt-2">
+                <label class="text-[11px] uppercase font-black text-white/70 ml-1 tracking-widest block mb-1">Code Invitation</label>
+                <div class="input-group rounded-2xl">
+                    <input type="text" id="inv" placeholder="Code de parrainage" class="font-bold text-orange-500 text-center text-lg tracking-widest" required>
+                </div>
             </div>
 
-            <button type="submit" id="submitBtn" class="bg-white text-black font-black w-full py-4 rounded-2xl text-[11px] uppercase mt-4 shadow-xl active:scale-95 transition-all">
+            <button type="submit" id="submitBtn" class="bg-orange-500 text-white font-black w-full py-5 rounded-2xl text-[14px] uppercase mt-6 shadow-xl hover:bg-orange-600 active:scale-95 transition-all block text-center">
                 Créer mon compte
             </button>
         </form>
 
-        <div class="mt-8 text-center text-white/40 text-xs">
-            Déjà inscrit ? <a href="index.html" class="text-white font-bold underline ml-1 italic text-blue-400">Se connecter</a>
+        <div class="mt-8 text-center text-white/50 text-sm">
+            Déjà inscrit ? <a href="index.html" class="text-orange-500 font-bold underline ml-1">Se connecter</a>
         </div>
     </div>
 
@@ -60,13 +104,11 @@
         // --- 1. FONCTION POUR RÉCUPÉRER LE CODE DANS L'URL ---
         window.onload = function() {
             const urlParams = new URLSearchParams(window.location.search);
-            const refCode = urlParams.get('ref'); // Cherche ?ref=...
+            const refCode = urlParams.get('ref'); 
             
             if (refCode) {
                 const invInput = document.getElementById('inv');
                 invInput.value = refCode;
-                // Optionnel : On peut le mettre en lecture seule pour éviter que l'utilisateur le change
-                // invInput.readOnly = true; 
                 console.log("Code de parrainage détecté : " + refCode);
             }
         };
@@ -97,7 +139,7 @@
             const userData = {
                 telephone: "+243" + phone,
                 motDePasse: pass1,
-                parrain: inviteCode, // On enregistre qui est le parrain
+                parrain: inviteCode, 
                 solde: 0,
                 dateInscription: new Date().toISOString(),
                 status: "Actif"
@@ -109,13 +151,13 @@
             })
             .then(res => {
                 if(res.ok) {
-                    alert("✅ Bienvenue sur SONNY RDC !");
+                    alert("✅ Bienvenue sur CHARGE POINT RDC !");
                     window.location.href = "index.html";
                 } else { throw new Error(); }
             })
             .catch(() => {
                 alert("❌ Erreur. Vérifiez votre connexion.");
-                btn.innerText = "S'INSCRIRE";
+                btn.innerText = "CRÉER MON COMPTE";
                 btn.disabled = false;
             });
         });
